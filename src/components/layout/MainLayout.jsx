@@ -8,6 +8,7 @@ const MainLayout = ({ children }) => {
   const { sidebarOpen } = useApp();
   const { isMobile } = useWindowWidth();
 
+  /* On mobile sidebar is an overlay — never push content */
   const marginLeft = !isMobile && sidebarOpen ? '300px' : '0px';
 
   return (

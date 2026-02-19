@@ -11,10 +11,10 @@ const HeroBanner = () => {
         {/* Full bleed background image */}
         <img src={casinoBg} alt="Hero Banner" style={styles.mobileBgImage} />
 
-        {/* Dark gradient only at top so text is readable, bottom shows players clearly */}
+        {/* Dark gradient over top so text is readable */}
         <div style={styles.mobileOverlay} />
 
-        {/* Text overlaid top-left */}
+        {/* Text — top-left, matches Figma */}
         <div style={styles.mobileContent}>
           <h1 style={styles.mobileHeading}>
             <span style={styles.line}>Celebrate Every Spin.</span>
@@ -45,18 +45,18 @@ const HeroBanner = () => {
 
 const styles = {
 
-  /* ── Mobile banner — Figma: w393 h424, full bleed ── */
+  /* ── Mobile — Figma: w393 h424, full bleed ── */
   mobileBanner: {
     position: 'relative',
-    width: 'calc(100% + 24px)',   /* full bleed — cancel MainLayout 12px padding each side */
+    width: 'calc(100% + 24px)',
     marginLeft: '-12px',
     marginRight: '-12px',
     marginTop: '-12px',
-    marginBottom: '16px',
-    height: '424px',              /* Figma: height 424 */
+    marginBottom: '12px',
+    height: '393px',
     overflow: 'hidden',
+    backgroundColor: '#041437',
   },
-  /* Image fills full banner — Figma: w393 h424 */
   mobileBgImage: {
     position: 'absolute',
     top: 0,
@@ -64,33 +64,26 @@ const styles = {
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    objectPosition: 'center center',
+    objectPosition: 'center top',
   },
-  /* Gradient over top portion so heading is readable */
   mobileOverlay: {
     position: 'absolute',
     inset: 0,
-    background: 'linear-gradient(180deg, rgba(4,20,55,0.75) 0%, rgba(4,20,55,0.40) 30%, transparent 55%)',
+    background: 'linear-gradient(180deg, rgba(4,20,55,0.82) 0%, rgba(4,20,55,0.50) 35%, transparent 60%)',
   },
-  /* Heading block — Figma: w346 h82, centered horizontally */
+  /* Text block — Figma: top ~24px, left-padded ~16px */
   mobileContent: {
     position: 'absolute',
-    top: '24px',
-    left: '0',
-    right: '0',
-    width: '346px',               /* Figma: width 346 */
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    height: '82px',               /* Figma: height 82 */
+    top: '28px',
+    left: '16px',
+    right: '16px',
     zIndex: 1,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '4px',
-    paddingLeft: '20px',
+    gap: '6px',
   },
   mobileHeading: {
-    fontSize: '26px',
+    fontSize: '28px',
     fontWeight: '800',
     color: '#ffffff',
     lineHeight: 1.2,
@@ -98,14 +91,15 @@ const styles = {
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
   },
   mobileTagline: {
-    fontSize: '20px',
+    fontSize: '22px',
     fontWeight: '500',
     color: '#e3ff00',
     margin: 0,
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
+    fontStyle: 'italic',
   },
 
-  /* ── Desktop banner ── */
+  /* ── Desktop ── */
   banner: {
     position: 'relative',
     width: '100%',

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import SearchBar from '../common/SearchBar';
 
 import sportsIcon      from '../../assets/icons/sportsicon.png';
@@ -13,7 +14,6 @@ import bonusIcon       from '../../assets/icons/icon-bonus.svg';
 import supportIcon     from '../../assets/icons/icon-support.svg';
 import aboutIcon       from '../../assets/icons/icon-about.svg';
 
-/* ── About sub-links (clickable — navigate to page) ── */
 const aboutLinks = [
   { label: 'AML Policy',            path: '/about/aml-policy' },
   { label: 'Cookie Policy',         path: '/about/cookie-policy' },
@@ -25,7 +25,6 @@ const aboutLinks = [
   { label: 'Terms & Conditions',    path: '/about/terms-and-conditions' },
 ];
 
-/* ── All main nav items — static display only, except items with path or expandable ── */
 const menuItems = [
   { label: 'Sports',          icon: sportsIcon },
   { label: 'Live Sports',     icon: liveSportsIcon },
@@ -38,19 +37,17 @@ const menuItems = [
   { label: 'About Us',        icon: aboutIcon, expandable: true, children: aboutLinks },
 ];
 
-/* ── Chevron SVGs ── */
 const ChevronDown = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
     <path d="M6 9l6 6 6-6" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 const ChevronUp = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
     <path d="M18 15l-6-6-6 6" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-/* ── LIVE badge ── */
 const LiveBadge = () => (
   <span style={styles.liveBadge}>
     <span style={styles.liveDot} />
@@ -60,99 +57,128 @@ const LiveBadge = () => (
 
 /* ══════════════════════════════════════════════════════════ */
 const Sidebar = () => {
-  const { sidebarOpen } = useApp();
+  const { sidebarOpen, toggleSidebar } = useApp();
+  const { isMobile } = useWindowWidth();
   const [expanded, setExpanded] = useState({});
   const [activeSubItem, setActiveSubItem] = useState(null);
   const navigate = useNavigate();
 
-  if (!sidebarOpen) return null;
+  /* On desktop: hide if sidebarOpen is false */
+  if (!isMobile && !sidebarOpen) return null;
+
+  /* On mobile: never fully unmount — slide in/out via transform */
+  const mobileTranslate = isMobile
+    ? (sidebarOpen ? 'translateX(0)' : 'translateX(-100%)')
+    : 'translateX(0)';
 
   return (
-    <aside style={styles.sidebar}>
+    <>
+      {/* Backdrop — mobile only, shown when sidebar is open */}
+      {isMobile && sidebarOpen && (
+        <div
+          style={styles.backdrop}
+          onClick={toggleSidebar}
+        />
+      )}
 
-      {/* ── Search bar (static) ── */}
-      <div style={styles.searchWrapper}>
-        <SearchBar />
-      </div>
+      <aside style={{
+        ...styles.sidebar,
+        top: isMobile ? '52px' : '80px',
+        height: isMobile ? 'calc(100vh - 52px)' : 'calc(100vh - 80px)',
+        transform: mobileTranslate,
+        transition: 'transform 0.3s ease',
+        zIndex: isMobile ? 1100 : 900,
+        boxShadow: isMobile && sidebarOpen ? '4px 0 20px rgba(0,0,0,0.2)' : 'none',
+      }}>
 
-      {/* ── Navigation menu ── */}
-      <nav style={styles.menu}>
-        {menuItems.map((item) => (
-          <div key={item.label}>
+        {/* Search bar */}
+        <div style={styles.searchWrapper}>
+          <SearchBar />
+        </div>
 
-            {/* About Us — clickable to expand/collapse */}
-            {item.expandable ? (
-              <button
-                style={styles.menuItem}
-                onClick={() =>
-                  setExpanded(prev => ({ ...prev, [item.label]: !prev[item.label] }))
-                }
-              >
-                <img src={item.icon} alt={item.label} style={styles.menuIcon} />
-                <span style={styles.menuLabel}>{item.label}</span>
-                <span style={styles.chevron}>
-                  {expanded[item.label] ? <ChevronUp /> : <ChevronDown />}
-                </span>
-              </button>
-            ) : item.path ? (
-              /* Items with a path — clickable button that navigates */
-              <button
-                style={styles.menuItem}
-                onClick={() => navigate(item.path)}
-              >
-                <img src={item.icon} alt={item.label} style={styles.menuIcon} />
-                <span style={styles.menuLabel}>{item.label}</span>
-              </button>
-            ) : (
-              /* All other items — static, non-clickable display */
-              <div style={styles.menuItemStatic}>
-                <img src={item.icon} alt={item.label} style={styles.menuIcon} />
-                <span style={styles.menuLabel}>{item.label}</span>
-                {item.isLive && <LiveBadge />}
-              </div>
-            )}
+        {/* Navigation menu */}
+        <nav style={styles.menu}>
+          {menuItems.map((item) => (
+            <div key={item.label}>
 
-            {/* About Us sub-links */}
-            {item.children && expanded[item.label] && (
-              <div style={styles.submenu}>
-                {item.children.map((child) => (
-                  <button
-                    key={child.label}
-                    style={{
-                      ...styles.submenuItem,
-                      ...(activeSubItem === child.label ? styles.submenuItemActive : {}),
-                    }}
-                    onClick={() => {
-                      setActiveSubItem(child.label);
-                      navigate(child.path);
-                    }}
-                  >
-                    {child.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </nav>
-    </aside>
+              {item.expandable ? (
+                <button
+                  style={styles.menuItem}
+                  onClick={() =>
+                    setExpanded(prev => ({ ...prev, [item.label]: !prev[item.label] }))
+                  }
+                >
+                  <img src={item.icon} alt={item.label} style={styles.menuIcon} />
+                  <span style={styles.menuLabel}>{item.label}</span>
+                  <span style={styles.chevron}>
+                    {expanded[item.label] ? <ChevronUp /> : <ChevronDown />}
+                  </span>
+                </button>
+              ) : item.path ? (
+                <button
+                  style={styles.menuItem}
+                  onClick={() => {
+                    navigate(item.path);
+                    if (isMobile) toggleSidebar();
+                  }}
+                >
+                  <img src={item.icon} alt={item.label} style={styles.menuIcon} />
+                  <span style={styles.menuLabel}>{item.label}</span>
+                </button>
+              ) : (
+                <div style={styles.menuItemStatic}>
+                  <img src={item.icon} alt={item.label} style={styles.menuIcon} />
+                  <span style={styles.menuLabel}>{item.label}</span>
+                  {item.isLive && <LiveBadge />}
+                </div>
+              )}
+
+              {/* About Us sub-links */}
+              {item.children && expanded[item.label] && (
+                <div style={styles.submenu}>
+                  {item.children.map((child) => (
+                    <button
+                      key={child.label}
+                      style={{
+                        ...styles.submenuItem,
+                        ...(activeSubItem === child.label ? styles.submenuItemActive : {}),
+                      }}
+                      onClick={() => {
+                        setActiveSubItem(child.label);
+                        navigate(child.path);
+                        if (isMobile) toggleSidebar();
+                      }}
+                    >
+                      {child.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+      </aside>
+    </>
   );
 };
 
 /* ══════════════════════════════════════════════════════════ */
 const styles = {
+  /* Dark semi-transparent backdrop behind sidebar on mobile */
+  backdrop: {
+    position: 'fixed',
+    inset: 0,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    zIndex: 1099,
+  },
 
-  /* ── Outer aside ── */
   sidebar: {
     width: '300px',
     minWidth: '300px',
-    height: 'calc(100vh - 80px)',
     backgroundColor: '#ffffff',
     borderBottomRightRadius: '12px',
     position: 'fixed',
-    top: '80px',
     left: 0,
-    zIndex: 900,
     overflowY: 'auto',
     overflowX: 'hidden',
     display: 'flex',
@@ -160,13 +186,11 @@ const styles = {
     boxSizing: 'border-box',
   },
 
-  /* ── Search wrapper — no border ── */
   searchWrapper: {
     padding: '16px 16px 12px',
     border: '0px solid transparent',
   },
 
-  /* ── Nav menu ── */
   menu: {
     flex: 1,
     padding: '8px 0',
@@ -174,7 +198,6 @@ const styles = {
     flexDirection: 'column',
   },
 
-  /* Static nav row (div, not button — no pointer, no interaction) */
   menuItemStatic: {
     display: 'flex',
     alignItems: 'center',
@@ -189,7 +212,6 @@ const styles = {
     border: '0px solid transparent',
   },
 
-  /* About Us button row */
   menuItem: {
     display: 'flex',
     alignItems: 'center',
@@ -220,7 +242,6 @@ const styles = {
     color: '#0d0c22',
   },
 
-  /* LIVE badge */
   liveBadge: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -248,7 +269,6 @@ const styles = {
     flexShrink: 0,
   },
 
-  /* ── About Us sub-menu ── */
   submenu: {
     display: 'flex',
     flexDirection: 'column',

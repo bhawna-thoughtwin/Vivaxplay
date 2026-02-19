@@ -3,7 +3,8 @@ import { createContext, useContext, useState } from 'react';
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  /* On mobile (< 768px) sidebar starts closed; on desktop it starts open */
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth >= 768);
   const [activeNav, setActiveNav] = useState('Sports');
 
   const toggleSidebar = () => setSidebarOpen(prev => !prev);

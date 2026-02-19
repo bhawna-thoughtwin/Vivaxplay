@@ -43,30 +43,45 @@ const PromotionsSection = () => {
   return (
     <section style={{
       ...styles.section,
-      width: '100%',
-      padding: isMobile ? '14px' : '20px',
-      boxSizing: 'border-box',
+      padding: isMobile ? '16px 14px' : '20px',
+      marginBottom: isMobile ? '12px' : '16px',
     }}>
+
       <SectionHeader
         title="Promotions"
-        icon={<img src={promotionsIcon} alt="Promotions" />}
-        onViewAll={() => { }}
+        icon={<img src={promotionsIcon} alt="Promotions" style={{
+          width: isMobile ? '40px' : '51px',
+          height: isMobile ? '40px' : '51px',
+          objectFit: 'contain',
+        }} />}
+        onViewAll={() => {}}
       />
 
+      {/* Cards row — horizontal scroll with snap */}
       <div style={{
         ...styles.grid,
         gap: isMobile ? '12px' : '16px',
+        scrollSnapType: isMobile ? 'x mandatory' : 'none',
       }}>
         {promotions.map((promo) => (
-          <PromotionCard key={promo.title} {...promo} isMobile={isMobile} />
+          <div key={promo.title} style={{
+            scrollSnapAlign: isMobile ? 'start' : 'none',
+            flexShrink: 0,
+            width: isMobile ? 'calc(100vw - 52px)' : 'auto',
+            minWidth: isMobile ? 'calc(100vw - 52px)' : 'auto',
+          }}>
+            <PromotionCard {...promo} isMobile={isMobile} />
+          </div>
         ))}
       </div>
 
+      {/* Pagination dots */}
       <div style={styles.dots}>
-        {[0, 1, 2, 3].map((i) => (
+        {[0, 1, 2].map((i) => (
           <div key={i} style={{ ...styles.dot, ...(i === 0 ? styles.dotActive : {}) }} />
         ))}
       </div>
+
     </section>
   );
 };
@@ -75,7 +90,8 @@ const styles = {
   section: {
     backgroundColor: '#ffffff',
     borderRadius: '12px',
-    marginBottom: '16px',
+    boxSizing: 'border-box',
+    width: '100%',
   },
   grid: {
     display: 'flex',

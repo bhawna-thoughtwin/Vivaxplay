@@ -21,14 +21,28 @@ const Navbar = () => {
   const { isMobile } = useWindowWidth();
 
   return (
-    <header style={styles.navbar}>
+    <header style={{
+      ...styles.navbar,
+      height: isMobile ? '52px' : '62px',
+      padding: isMobile ? '0 12px' : '0 20px',
+    }}>
 
-      {/* Left — Logo */}
+      {/* Left — Hamburger (mobile) + Logo */}
       <div style={styles.left}>
+        {isMobile && (
+          <button style={styles.hamburger} onClick={toggleSidebar}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round"/>
+            </svg>
+          </button>
+        )}
         <img
           src={logoSvg}
           alt="VIVA X PLAY"
-          style={styles.logo}
+          style={{
+            ...styles.logo,
+            height: isMobile ? '26px' : '34px',
+          }}
           onClick={() => navigate('/')}
         />
       </div>
@@ -57,23 +71,27 @@ const Navbar = () => {
 
       {/* Right — Auth Buttons */}
       <div style={styles.authButtons}>
-        {/* Language button — always visible */}
+
+        {/* Globe / Language */}
         <button style={isMobile ? styles.langBtnMobile : styles.langBtn}>
-          <img src={worldIcon} alt="lang" style={{ width: 14, height: 14 }} />
-          EN
+          <img src={worldIcon} alt="lang" style={{ width: isMobile ? 16 : 14, height: isMobile ? 16 : 14 }} />
+          {!isMobile && 'EN'}
         </button>
 
+        {/* Login */}
         <button
           style={isMobile ? styles.loginBtnMobile : styles.loginBtn}
           onClick={() => navigate('/login')}
         >
-          Login
+          LOGIN
         </button>
+
+        {/* Register */}
         <button
           style={isMobile ? styles.registerBtnMobile : styles.registerBtn}
           onClick={() => navigate('/register')}
         >
-          Register
+          REGISTER
         </button>
       </div>
 
@@ -87,8 +105,6 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#1f1f1f',
-    padding: '0 16px',
-    height: '56px',
     position: 'fixed',
     top: 0,
     left: 0,
@@ -98,10 +114,19 @@ const styles = {
   left: {
     display: 'flex',
     alignItems: 'center',
-    gap: '14px',
+    gap: '10px',
+  },
+  hamburger: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: '4px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
   },
   logo: {
-    height: '30px',
     objectFit: 'contain',
     cursor: 'pointer',
   },
@@ -150,6 +175,8 @@ const styles = {
     alignItems: 'center',
     gap: '8px',
   },
+
+  /* Desktop */
   langBtn: {
     display: 'flex',
     alignItems: 'center',
@@ -177,31 +204,6 @@ const styles = {
     border: '1px solid #1cd4ff',
     transition: 'all 0.2s ease',
   },
-  langBtnMobile: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    backgroundColor: '#121212',
-    color: '#ffffff',
-    padding: '5px 10px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '11px',
-    fontWeight: 500,
-    fontFamily: 'inherit',
-    border: '1px solid #1cd4ff',
-  },
-  loginBtnMobile: {
-    backgroundColor: 'transparent',
-    color: '#ffffff',
-    padding: '6px 12px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '12px',
-    fontWeight: 600,
-    fontFamily: 'inherit',
-    border: '1px solid #ffffff55',
-  },
   registerBtn: {
     background: '#1cd4ff',
     border: 'none',
@@ -210,24 +212,49 @@ const styles = {
     borderRadius: '6px',
     cursor: 'pointer',
     fontSize: '12px',
-    fontWeight: '510',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    fontStyle: 'normal',
-    lineHeight: '20px',
-    letterSpacing: '0',
+    fontWeight: '600',
+    fontFamily: 'inherit',
     textTransform: 'uppercase',
+  },
+
+  /* Mobile — matches Figma: globe icon | LOGIN border | REGISTER cyan */
+  langBtnMobile: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    color: '#ffffff',
+    padding: '6px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    border: '1px solid #1cd4ff',
+    width: '32px',
+    height: '32px',
+  },
+  loginBtnMobile: {
+    backgroundColor: 'transparent',
+    color: '#ffffff',
+    padding: '6px 12px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '12px',
+    fontWeight: '600',
+    fontFamily: 'inherit',
+    border: '1px solid #ffffff',
+    letterSpacing: '0.3px',
   },
   registerBtnMobile: {
     background: '#1cd4ff',
     border: 'none',
-    color: '#121212',
+    color: '#0d0d0d',
     padding: '6px 14px',
     borderRadius: '6px',
     cursor: 'pointer',
     fontSize: '12px',
     fontWeight: '700',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
+    fontFamily: 'inherit',
     textTransform: 'uppercase',
+    letterSpacing: '0.3px',
   },
 };
 
