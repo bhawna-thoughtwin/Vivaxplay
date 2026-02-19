@@ -259,6 +259,7 @@ const styles = {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     gap: '20px',
   },
 
@@ -267,11 +268,12 @@ const styles = {
     fontWeight: '700',
     fontStyle: 'normal',
     color: '#111111',
-    margin: 0,
+    margin: '0 auto',
+    width: '100%',
     fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
     lineHeight: '20px',
     letterSpacing: '0',
-    textAlign: 'left',
+    textAlign: 'center',
     textTransform: 'uppercase',
   },
 
