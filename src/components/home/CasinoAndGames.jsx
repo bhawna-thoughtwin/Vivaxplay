@@ -142,7 +142,7 @@ const CasinoAndGames = () => (
 
           {/* Label bar */}
           <div
-            className="absolute bottom-0 left-0 w-full h-7 flex items-center pl-3 z-[3]"
+            className="absolute bottom-0 left-0 w-full h-7 flex items-center justify-center z-[3]"
             style={{ background: 'linear-gradient(90deg, #163e5e 0%, #266181 100%)' }}
           >
             <span className="text-[11px] md:text-[14px] font-semibold text-white">{item.label}</span>
