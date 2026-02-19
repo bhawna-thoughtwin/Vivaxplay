@@ -1,7 +1,7 @@
+import useWindowWidth from '../../hooks/useWindowWidth';
 import loginLogo from '../../assets/images/loginlogo.png';
 import footerBg  from '../../assets/images/footer.png';
 
-/* ── Link columns ── */
 const sportsLinks  = ['Football', 'Tennis', 'Basketball', 'Baseball', 'Boxing'];
 const casinoLinks  = ['Live Casino', 'Slots', 'Roulette', 'Blackjack', 'Roulette'];
 const supportLinks = ['Provably Fair', 'Partner Program', 'Responsible Gambling', 'Help Center', 'Live Support'];
@@ -48,25 +48,46 @@ const TelegramIcon = () => (
 
 /* ══════════════════════════════════════════════════════════ */
 const Footer = ({ sidebarOpen }) => {
-  return (
-    <footer style={{ ...styles.footer, marginLeft: sidebarOpen ? '300px' : '0px' }}>
+  const { isMobile } = useWindowWidth();
 
-      {/* ── Outer border wrapper ── */}
+  return (
+    <footer style={{
+      ...styles.footer,
+      marginLeft: !isMobile && sidebarOpen ? '300px' : '0px',
+      /* On mobile add bottom padding for the tab bar */
+      paddingBottom: isMobile ? '80px' : '20px',
+    }}>
+
       <div style={styles.borderBox}>
 
-        {/* Roulette wheel — positioned absolutely over entire footer box */}
-        <img src={footerBg} alt="" style={styles.rouletteImg} />
+        {/* Roulette wheel — hide on mobile to save space */}
+        {!isMobile && (
+          <img src={footerBg} alt="" style={styles.rouletteImg} />
+        )}
 
         {/* ── Top section: logo + columns ── */}
-        <div style={styles.topRow}>
+        <div style={{
+          ...styles.topRow,
+          flexDirection: isMobile ? 'column' : 'row',
+          padding: isMobile ? '20px 16px 16px' : '32px 40px 24px',
+          gap: isMobile ? '20px' : '40px',
+          alignItems: isMobile ? 'center' : 'flex-start',
+        }}>
 
           {/* Logo */}
           <div style={styles.logoArea}>
             <img src={loginLogo} alt="VIVA X PLAY" style={styles.logo} />
           </div>
 
-          {/* Columns */}
-          <div style={styles.columns}>
+          {/* Columns — 2x2 grid on mobile */}
+          <div style={{
+            ...styles.columns,
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)',
+            gap: isMobile ? '20px 24px' : '24px',
+            width: isMobile ? '100%' : undefined,
+            flex: isMobile ? undefined : 1,
+          }}>
             <FooterColumn title="SPORTS"   links={sportsLinks}  />
             <FooterColumn title="CASINO"   links={casinoLinks}  />
             <FooterColumn title="SUPPORT"  links={supportLinks} />
@@ -74,20 +95,28 @@ const Footer = ({ sidebarOpen }) => {
           </div>
         </div>
 
-        {/* ── Divider ── */}
-        <div style={styles.divider} />
+        {/* Divider */}
+        <div style={{
+          ...styles.divider,
+          margin: isMobile ? '0 16px' : '0 40px',
+        }} />
 
-        {/* ── Bottom section: legal + socials ── */}
-        <div style={styles.bottomSection}>
-
-          {/* Legal text — centered */}
-          <p style={styles.legalText}>
+        {/* ── Bottom: legal + socials ── */}
+        <div style={{
+          ...styles.bottomSection,
+          padding: isMobile ? '16px 16px' : '24px 40px',
+          gap: isMobile ? '12px' : '16px',
+          minHeight: isMobile ? 'auto' : '120px',
+        }}>
+          <p style={{
+            ...styles.legalText,
+            fontSize: isMobile ? '10px' : '11px',
+          }}>
             VIVA x PLAY is operated by ASTERI LTD, registration number X-XXX-XXXXX, with registered address; Toronto, Canada. ASTERI LTD is licensed and
             regulated under the Gaming Act by the Curaçao Gaming Authority. Contact us at{' '}
             <a href="mailto:support@vivaxplay.com" style={styles.legalLink}>support@vivaxplay.com</a>
           </p>
 
-          {/* Social icons */}
           <div style={styles.socials}>
             <span style={styles.socialIcon}><InstagramIcon /></span>
             <span style={styles.socialIcon}><FacebookIcon /></span>
@@ -96,9 +125,15 @@ const Footer = ({ sidebarOpen }) => {
           </div>
         </div>
 
-        {/* ── Copyright bar ── */}
-        <div style={styles.copyrightBar}>
-          <span style={styles.copyrightText}>
+        {/* Copyright bar */}
+        <div style={{
+          ...styles.copyrightBar,
+          padding: isMobile ? '10px 16px' : '12px 40px',
+        }}>
+          <span style={{
+            ...styles.copyrightText,
+            fontSize: isMobile ? '10px' : '11px',
+          }}>
             ALL RIGHTS RESERVED | VIVA x PLAY @ 2026 | Copyright
           </span>
         </div>
@@ -120,59 +155,44 @@ const FooterColumn = ({ title, links }) => (
 
 /* ══════════════════════════════════════════════════════════ */
 const styles = {
-
   footer: {
     backgroundColor: '#080808',
     marginTop: 0,
     padding: '20px',
     boxSizing: 'border-box',
   },
-
-  /* No border — relative so roulette image can be absolutely positioned inside */
   borderBox: {
     position: 'relative',
     borderRadius: '10px',
     overflow: 'hidden',
     backgroundColor: '#0d0d0d',
   },
-
-  /* ── Top row: logo left, columns right ── */
   topRow: {
     position: 'relative',
     zIndex: 1,
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '40px',
-    padding: '32px 40px 24px',
   },
-
   logoArea: {
     flexShrink: 0,
     width: '180px',
+    display: 'flex',
+    justifyContent: 'center',
   },
-
   logo: {
-    width: '160px',
+    width: '140px',
     height: 'auto',
     objectFit: 'contain',
     display: 'block',
   },
-
   columns: {
-    flex: 1,
-    display: 'flex',
     justifyContent: 'space-between',
-    gap: '24px',
-    flexWrap: 'wrap',
   },
-
   column: {
     display: 'flex',
     flexDirection: 'column',
     gap: '6px',
-    minWidth: '110px',
   },
-
   columnTitle: {
     fontSize: '13px',
     fontWeight: '700',
@@ -181,7 +201,6 @@ const styles = {
     letterSpacing: '0.5px',
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
   },
-
   linkBtn: {
     display: 'block',
     background: 'none',
@@ -194,15 +213,10 @@ const styles = {
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
     lineHeight: 1.8,
   },
-
-  /* ── Divider ── */
   divider: {
     height: '1px',
     backgroundColor: '#1e1e1e',
-    margin: '0 40px',
   },
-
-  /* ── Bottom section ── */
   bottomSection: {
     position: 'relative',
     zIndex: 1,
@@ -210,12 +224,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '24px 40px 24px 40px',
-    gap: '16px',
-    minHeight: '120px',
   },
-
-  /* Roulette wheel — Figma spec: w317 h316 top134 left-97, luminosity blend */
   rouletteImg: {
     position: 'absolute',
     top: '134px',
@@ -229,28 +238,23 @@ const styles = {
     pointerEvents: 'none',
     zIndex: 0,
   },
-
   legalText: {
     textAlign: 'center',
-    fontSize: '11px',
     color: '#555555',
     lineHeight: 1.7,
     margin: 0,
     maxWidth: '620px',
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
   },
-
   legalLink: {
     color: '#1cd4ff',
     textDecoration: 'none',
   },
-
   socials: {
     display: 'flex',
     gap: '8px',
     flexShrink: 0,
   },
-
   socialIcon: {
     display: 'flex',
     alignItems: 'center',
@@ -259,18 +263,13 @@ const styles = {
     borderRadius: '6px',
     overflow: 'hidden',
   },
-
-  /* ── Copyright bar ── */
   copyrightBar: {
     position: 'relative',
     zIndex: 1,
     borderTop: '1px solid #2a2a3a',
-    padding: '12px 40px',
     textAlign: 'center',
   },
-
   copyrightText: {
-    fontSize: '11px',
     color: '#666666',
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
     letterSpacing: '0.3px',

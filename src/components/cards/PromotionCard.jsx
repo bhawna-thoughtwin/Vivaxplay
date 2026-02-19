@@ -1,30 +1,63 @@
-const PromotionCard = ({ title, line1, line1Bold, line2, line2Highlight, btnLabel, image, gradient }) => {
+const PromotionCard = ({ title, line1, line1Bold, line2, line2Highlight, btnLabel, image, gradient, isMobile }) => {
   return (
-    <div style={{ ...styles.card, background: gradient || '#1a3a52' }}>
+    <div style={{
+      ...styles.card,
+      background: gradient || '#1a3a52',
+      width: isMobile ? '100%' : '456px',
+      height: isMobile ? '180px' : '240px',
+      flexShrink: 0,
+      minWidth: isMobile ? '100%' : '456px',
+    }}>
 
-      {/* Character image — exact Figma position */}
+      {/* Character image — right side, bleeds top */}
       {image && (
-        <img src={image} alt={title} style={styles.image} />
+        <img src={image} alt={title} style={{
+          ...styles.image,
+          top: isMobile ? '-10px' : '33px',
+          left: isMobile ? '42%' : '151px',
+          width: isMobile ? '280px' : '401px',
+          height: isMobile ? '280px' : '401px',
+        }} />
       )}
 
-      {/* Left-to-right gradient overlay so text stays readable */}
+      {/* Gradient overlay */}
       <div style={styles.overlay} />
 
       {/* Text content */}
-      <div style={styles.content}>
-        <h3 style={styles.title}>{title}</h3>
+      <div style={{
+        ...styles.content,
+        padding: isMobile ? '20px 20px' : '24px 28px',
+        maxWidth: isMobile ? '60%' : '55%',
+        justifyContent: 'flex-start',
+        paddingTop: isMobile ? '24px' : '24px',
+      }}>
+        <h3 style={{
+          ...styles.title,
+          fontSize: isMobile ? '22px' : '24px',
+        }}>{title}</h3>
 
-        <p style={styles.descLine}>
+        <p style={{
+          ...styles.descLine,
+          fontSize: isMobile ? '13px' : '14px',
+        }}>
           {line1}{line1Bold && <strong style={styles.bold}> {line1Bold}</strong>}
         </p>
 
         {line2 && (
-          <p style={styles.descLine}>
+          <p style={{
+            ...styles.descLine,
+            fontSize: isMobile ? '13px' : '14px',
+          }}>
             {line2}{line2Highlight && <strong style={styles.highlight}> {line2Highlight}</strong>}
           </p>
         )}
 
-        <button style={styles.btn}>{btnLabel}</button>
+        <button style={{
+          ...styles.btn,
+          marginTop: isMobile ? '14px' : '14px',
+          padding: isMobile ? '8px 20px' : '9px 22px',
+          fontSize: isMobile ? '12px' : '13px',
+        }}>{btnLabel}</button>
       </div>
     </div>
   );
@@ -35,25 +68,17 @@ const styles = {
     position: 'relative',
     borderRadius: '12px',
     overflow: 'hidden',
-    width: '456px',
-    height: '240px',
-    flexShrink: 0,
     cursor: 'pointer',
+    boxSizing: 'border-box',
   },
 
-  /* Character image — exact Figma position: top:33, left:151, size:401x401 */
   image: {
     position: 'absolute',
-    top: '33px',
-    left: '151px',
-    width: '401px',
-    height: '401px',
     objectFit: 'contain',
     pointerEvents: 'none',
     zIndex: 0,
   },
 
-  /* Gradient fade: solid left → transparent right */
   overlay: {
     position: 'absolute',
     inset: 0,
@@ -63,18 +88,15 @@ const styles = {
   content: {
     position: 'relative',
     zIndex: 1,
-    padding: '24px 28px',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     gap: '4px',
-    maxWidth: '55%',
     boxSizing: 'border-box',
   },
 
   title: {
-    fontSize: '24px',
     fontWeight: '700',
     margin: '0 0 6px',
     color: '#ffffff',
@@ -83,7 +105,6 @@ const styles = {
   },
 
   descLine: {
-    fontSize: '14px',
     fontWeight: '400',
     margin: 0,
     color: '#ffffffdd',
@@ -98,17 +119,14 @@ const styles = {
 
   highlight: {
     fontWeight: '700',
-    color: '#d4f542',   /* yellow-green like in the image */
+    color: '#d4f542',
   },
 
   btn: {
     alignSelf: 'flex-start',
-    marginTop: '14px',
     border: '0px solid transparent',
-    padding: '9px 22px',
     borderRadius: '999px',
     cursor: 'pointer',
-    fontSize: '13px',
     fontWeight: '600',
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
     backgroundColor: '#ffffff',

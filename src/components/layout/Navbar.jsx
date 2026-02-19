@@ -1,5 +1,6 @@
 import { useApp } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import logoSvg from '../../assets/icons/logo.svg';
 import worldIcon from '../../assets/icons/icon-world.svg';
 import sportsIcon from '../../assets/icons/icon-sports.svg';
@@ -8,23 +9,22 @@ import liveDealerIcon from '../../assets/icons/icon-live-dealer.svg';
 import promotionsIcon from '../../assets/icons/icon-promotions.svg';
 
 const navLinks = [
-  { label: 'Sports', path: '/sports', icon: sportsIcon },
-  { label: 'Casino', path: '/casino', icon: casinoIcon },
-  { label: 'Live Dealer', path: '/live-dealer', icon: liveDealerIcon },
-  { label: 'Promotions', path: '/promotions', icon: promotionsIcon },
+  { label: 'Sports',      path: '/sports',      icon: sportsIcon },
+  { label: 'Casino',      path: '/casino',       icon: casinoIcon },
+  { label: 'Live Dealer', path: '/live-dealer',  icon: liveDealerIcon },
+  { label: 'Promotions',  path: '/promotions',   icon: promotionsIcon },
 ];
 
 const Navbar = () => {
   const { toggleSidebar, activeNav, setActiveNav } = useApp();
   const navigate = useNavigate();
+  const { isMobile } = useWindowWidth();
 
   return (
     <header style={styles.navbar}>
-      {/* Left - Hamburger + Logo */}
+
+      {/* Left — Logo */}
       <div style={styles.left}>
-        <button style={styles.hamburger} onClick={toggleSidebar}>
-          {/* <span style={styles.hamburgerIcon}>☰</span> */}
-        </button>
         <img
           src={logoSvg}
           alt="VIVA X PLAY"
@@ -33,40 +33,50 @@ const Navbar = () => {
         />
       </div>
 
-      {/* Center - Nav Links */}
-      <nav style={styles.navLinks}>
-        {navLinks.map((link) => (
-          <button
-            key={link.label}
-            style={{
-              ...styles.navBtn,
-              ...(activeNav === link.label ? styles.navBtnActive : {}),
-            }}
-            onClick={() => {
-              setActiveNav(link.label);
-              navigate(link.path);
-            }}
-          >
-            <img src={link.icon} alt={link.label} style={styles.navIcon} />
-            {link.label}
-          </button>
-        ))}
-      </nav>
+      {/* Center — Nav Links (desktop only) */}
+      {!isMobile && (
+        <nav style={styles.navLinks}>
+          {navLinks.map((link) => (
+            <button
+              key={link.label}
+              style={{
+                ...styles.navBtn,
+                ...(activeNav === link.label ? styles.navBtnActive : {}),
+              }}
+              onClick={() => {
+                setActiveNav(link.label);
+                navigate(link.path);
+              }}
+            >
+              <img src={link.icon} alt={link.label} style={styles.navIcon} />
+              {link.label}
+            </button>
+          ))}
+        </nav>
+      )}
 
-      {/* Right - Auth Buttons */}
+      {/* Right — Auth Buttons */}
       <div style={styles.authButtons}>
-        <button style={styles.langBtn}>
+        {/* Language button — always visible */}
+        <button style={isMobile ? styles.langBtnMobile : styles.langBtn}>
           <img src={worldIcon} alt="lang" style={{ width: 14, height: 14 }} />
           EN
         </button>
+
         <button
-          style={styles.loginBtn}
+          style={isMobile ? styles.loginBtnMobile : styles.loginBtn}
           onClick={() => navigate('/login')}
         >
           Login
         </button>
-        <button onClick={() => navigate('/register')} style={styles.registerBtn}>Register</button>
+        <button
+          style={isMobile ? styles.registerBtnMobile : styles.registerBtn}
+          onClick={() => navigate('/register')}
+        >
+          Register
+        </button>
       </div>
+
     </header>
   );
 };
@@ -77,8 +87,8 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#1f1f1f',
-    padding: '0 20px',
-    height: '62px',
+    padding: '0 16px',
+    height: '56px',
     position: 'fixed',
     top: 0,
     left: 0,
@@ -90,23 +100,13 @@ const styles = {
     alignItems: 'center',
     gap: '14px',
   },
-  hamburger: {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '4px',
-  },
-  hamburgerIcon: {
-    color: '#ffffff',
-    fontSize: '20px',
-  },
   logo: {
-    height: '34px',
+    height: '30px',
     objectFit: 'contain',
     cursor: 'pointer',
   },
+
+  /* ── Desktop nav links ── */
   navLinks: {
     display: 'flex',
     alignItems: 'center',
@@ -143,6 +143,8 @@ const styles = {
     height: '18px',
     filter: 'brightness(10)',
   },
+
+  /* ── Auth buttons ── */
   authButtons: {
     display: 'flex',
     alignItems: 'center',
@@ -163,7 +165,6 @@ const styles = {
     border: '1px solid #1cd4ff',
     transition: 'all 0.2s ease',
   },
-
   loginBtn: {
     backgroundColor: '#121212',
     color: '#ffffff',
@@ -176,7 +177,31 @@ const styles = {
     border: '1px solid #1cd4ff',
     transition: 'all 0.2s ease',
   },
-
+  langBtnMobile: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    backgroundColor: '#121212',
+    color: '#ffffff',
+    padding: '5px 10px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '11px',
+    fontWeight: 500,
+    fontFamily: 'inherit',
+    border: '1px solid #1cd4ff',
+  },
+  loginBtnMobile: {
+    backgroundColor: 'transparent',
+    color: '#ffffff',
+    padding: '6px 12px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '12px',
+    fontWeight: 600,
+    fontFamily: 'inherit',
+    border: '1px solid #ffffff55',
+  },
   registerBtn: {
     background: '#1cd4ff',
     border: 'none',
@@ -190,6 +215,18 @@ const styles = {
     fontStyle: 'normal',
     lineHeight: '20px',
     letterSpacing: '0',
+    textTransform: 'uppercase',
+  },
+  registerBtnMobile: {
+    background: '#1cd4ff',
+    border: 'none',
+    color: '#121212',
+    padding: '6px 14px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '12px',
+    fontWeight: '700',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
     textTransform: 'uppercase',
   },
 };

@@ -1,5 +1,6 @@
 import SectionHeader from '../common/SectionHeader';
 import PromotionCard from '../cards/PromotionCard';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import promo1 from '../../assets/images/promo1.png';
 import promo2 from '../../assets/images/promo2.png';
 import promo3 from '../../assets/images/promo3.png';
@@ -37,23 +38,30 @@ const promotions = [
 ];
 
 const PromotionsSection = () => {
+  const { isMobile } = useWindowWidth();
+
   return (
-    <section style={styles.section}>
+    <section style={{
+      ...styles.section,
+      width: '100%',
+      padding: isMobile ? '14px' : '20px',
+      boxSizing: 'border-box',
+    }}>
       <SectionHeader
         title="Promotions"
-        icon={
-          <img
-            src={promotionsIcon}
-            alt="Promotions"
-          />
-        }
+        icon={<img src={promotionsIcon} alt="Promotions" />}
         onViewAll={() => { }}
       />
-      <div style={styles.grid}>
+
+      <div style={{
+        ...styles.grid,
+        gap: isMobile ? '12px' : '16px',
+      }}>
         {promotions.map((promo) => (
-          <PromotionCard key={promo.title} {...promo} />
+          <PromotionCard key={promo.title} {...promo} isMobile={isMobile} />
         ))}
       </div>
+
       <div style={styles.dots}>
         {[0, 1, 2, 3].map((i) => (
           <div key={i} style={{ ...styles.dot, ...(i === 0 ? styles.dotActive : {}) }} />
@@ -67,17 +75,14 @@ const styles = {
   section: {
     backgroundColor: '#ffffff',
     borderRadius: '12px',
-    padding: '20px',
     marginBottom: '16px',
-    width: '1189px',
   },
   grid: {
     display: 'flex',
-    gap: '16px',
     flexWrap: 'nowrap',
     overflowX: 'auto',
-    scrollbarWidth: 'none',       /* Firefox */
-    msOverflowStyle: 'none',      /* IE/Edge */
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
   },
   dots: {
     display: 'flex',

@@ -1,5 +1,6 @@
 import SectionHeader from '../common/SectionHeader';
 import MatchCard from '../cards/MatchCard';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import liveSportsIcon from '../../assets/icons/volleyball-player 1 (1).png';
 
 const matches = [
@@ -10,15 +11,26 @@ const matches = [
 ];
 
 const LiveBetting = () => {
+  const { isMobile } = useWindowWidth();
+
   return (
-    <section style={styles.section}>
+    <section style={{
+      ...styles.section,
+      width: '100%',
+      padding: isMobile ? '14px' : '20px',
+      boxSizing: 'border-box',
+    }}>
       <SectionHeader
         icon={<img src={liveSportsIcon} alt="Live Betting" style={styles.iconImg} />}
         title="Live Betting"
         subtitle="Real-time odds • Instant payouts"
         onViewAll={() => {}}
       />
-      <div style={styles.grid}>
+      <div style={{
+        ...styles.grid,
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: isMobile ? '10px' : '12px',
+      }}>
         {matches.map((match, i) => (
           <MatchCard key={i} {...match} />
         ))}
@@ -36,9 +48,7 @@ const styles = {
   section: {
     backgroundColor: '#ffffff',
     borderRadius: '12px',
-    padding: '20px',
     marginBottom: '16px',
-    width: '1189px',
   },
   iconImg: {
     width: '60px',
@@ -46,11 +56,10 @@ const styles = {
   },
   grid: {
     display: 'flex',
-    gap: '12px',
     flexWrap: 'nowrap',
     overflowX: 'auto',
-    width: '1240px',
-    maxWidth: '100%',
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
   },
   dots: {
     display: 'flex',

@@ -1,4 +1,5 @@
 import SectionHeader from '../common/SectionHeader';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import casinoIcon from '../../assets/icons/volleyball-player 1.png';
 import casino1 from '../../assets/images/casinoandgames1.png';
 import casino2 from '../../assets/images/casinoandgmaes2.png';
@@ -28,7 +29,6 @@ const casinoCategories = [
   },
   {
     label: 'Jackpot', number: '4', image: casino4, image2: casino44,
-    /* casino4 = slot machine (front/right, zIndex 3), casino44 = character (behind/left, zIndex 2) */
     imageStyle:  { position: 'absolute', bottom: '28px', right: '0px',  width: '140px', height: '185px', objectFit: 'contain', zIndex: 3 },
     image2Style: { position: 'absolute', bottom: '28px', left: '10px',  width: '160px', height: '200px', objectFit: 'contain', zIndex: 2 },
   },
@@ -47,7 +47,6 @@ const newGames = [
   { name: 'Fighter Pit',         image: new6 },
 ];
 
-
 /* ── Sub-section row header ── */
 const RowHeader = ({ title }) => (
   <div style={styles.rowHeader}>
@@ -57,11 +56,19 @@ const RowHeader = ({ title }) => (
 );
 
 /* ── Single game card ── */
-const GameCard = ({ name, image }) => (
-  <div style={styles.gameCard}>
+const GameCard = ({ name, image, isMobile }) => (
+  <div style={{
+    ...styles.gameCard,
+    width: isMobile ? '130px' : '200px',
+    minWidth: isMobile ? '130px' : '200px',
+    height: isMobile ? '160px' : '226px',
+  }}>
     <img src={image} alt={name} style={styles.gameImage} />
     <div style={styles.gameOverlay}>
-      <span style={styles.gameName}>{name}</span>
+      <span style={{
+        ...styles.gameName,
+        fontSize: isMobile ? '10px' : '13px',
+      }}>{name}</span>
     </div>
   </div>
 );
@@ -75,69 +82,104 @@ const Dots = () => (
   </div>
 );
 
-const CasinoAndGames = () => (
-  <section style={styles.section}>
+const CasinoAndGames = () => {
+  const { isMobile } = useWindowWidth();
 
-    {/* 1 ── Section header: icon box | title + subtitle stacked | VIEW ALL */}
-    <SectionHeader
-      icon={<img src={casinoIcon} alt="Casino & Games" style={styles.iconImg} />}
-      title="Casino & Games"
-      subtitle="Bet on 30+ sports with the best odds"
-      onViewAll={() => {}}
-    />
+  return (
+    <section style={{
+      ...styles.section,
+      width: '100%',
+      padding: isMobile ? '14px' : '20px',
+      boxSizing: 'border-box',
+    }}>
 
-    {/* 2 ── Category strip: number behind image, shifted left */}
-    <div style={styles.categoryGrid}>
-      {casinoCategories.map((item) => (
-        <div key={item.label} style={styles.categoryCard}>
-          {/* Number at z-index 1, shifted left to peek behind image */}
-          <span style={styles.categoryNumber}>{item.number}</span>
-          {/* Primary image — Figma-exact position per card */}
-          <img src={item.image} alt={item.label} style={item.imageStyle || styles.categoryImage} />
-          {/* Secondary character image — Jackpot only */}
-          {item.image2 && (
-            <img src={item.image2} alt={item.label + ' character'} style={item.image2Style || styles.categoryImage2} />
-          )}
-          {/* Label bar at bottom */}
-          <div style={styles.categoryLabelBar}>
-            <span style={styles.categoryLabel}>{item.label}</span>
+      {/* Section header */}
+      <SectionHeader
+        icon={<img src={casinoIcon} alt="Casino & Games" style={styles.iconImg} />}
+        title="Casino & Games"
+        subtitle="Bet on 30+ sports with the best odds"
+        onViewAll={() => {}}
+      />
+
+      {/* Category strip — horizontal scroll on mobile */}
+      <div style={{
+        ...styles.categoryGrid,
+        height: isMobile ? '150px' : '242px',
+        gap: isMobile ? '8px' : '12px',
+      }}>
+        {casinoCategories.map((item) => (
+          <div key={item.label} style={{
+            ...styles.categoryCard,
+            height: isMobile ? '150px' : '242px',
+            minWidth: isMobile ? '110px' : undefined,
+          }}>
+            <span style={{
+              ...styles.categoryNumber,
+              fontSize: isMobile ? '80px' : '151px',
+              top: isMobile ? '-5px' : '-10px',
+              left: isMobile ? '-4px' : '-8px',
+            }}>{item.number}</span>
+
+            <img
+              src={item.image}
+              alt={item.label}
+              style={isMobile ? {
+                position: 'absolute',
+                top: '0px',
+                left: '0px',
+                width: '100%',
+                height: '85%',
+                objectFit: 'contain',
+                zIndex: 2,
+              } : (item.imageStyle || styles.categoryImage)}
+            />
+
+            {item.image2 && !isMobile && (
+              <img
+                src={item.image2}
+                alt={item.label + ' character'}
+                style={item.image2Style || styles.categoryImage2}
+              />
+            )}
+
+            <div style={styles.categoryLabelBar}>
+              <span style={{
+                ...styles.categoryLabel,
+                fontSize: isMobile ? '11px' : '14px',
+              }}>{item.label}</span>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
 
-    {/* 3 ── New games row */}
-    <RowHeader title="New" />
-    <div style={styles.gameGrid}>
-      {newGames.map((item, i) => (
-        <GameCard key={i} name={item.name} image={item.image} />
-      ))}
-    </div>
-    <Dots />
+      {/* New games row */}
+      <RowHeader title="New" />
+      <div style={styles.gameGrid}>
+        {newGames.map((item, i) => (
+          <GameCard key={i} name={item.name} image={item.image} isMobile={isMobile} />
+        ))}
+      </div>
+      <Dots />
 
-    {/* 4 ── Live Dealer row */}
-    <RowHeader title="Live Dealer" />
-    <div style={styles.gameGrid}>
-      {newGames.map((item, i) => (
-        <GameCard key={i} name={item.name} image={item.image} />
-      ))}
-    </div>
-    <Dots />
+      {/* Live Dealer row */}
+      <RowHeader title="Live Dealer" />
+      <div style={styles.gameGrid}>
+        {newGames.map((item, i) => (
+          <GameCard key={i} name={item.name} image={item.image} isMobile={isMobile} />
+        ))}
+      </div>
+      <Dots />
 
-  </section>
-);
+    </section>
+  );
+};
 
 const styles = {
 
-  /* ── Outer section ── */
   section: {
     backgroundColor: '#ffffff',
     borderRadius: '12px',
-    padding: '20px',
     marginBottom: '16px',
-    width: '1189px',
-    maxWidth: '100%',
-    boxSizing: 'border-box',
   },
 
   iconImg: {
@@ -151,23 +193,21 @@ const styles = {
     gap: '12px',
     marginBottom: '24px',
     width: '100%',
-    height: '242px',
+    overflowX: 'auto',
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
   },
   categoryCard: {
     position: 'relative',
     flex: 1,
-    height: '242px',
+    minWidth: '0',
     borderRadius: '16px',
     overflow: 'hidden',
     cursor: 'pointer',
     background: 'linear-gradient(180deg, #c1cfdb 0%, #dbe3e7 100%)',
   },
-  /* Number — top-left of card, z-index 1 so images sit on top */
   categoryNumber: {
     position: 'absolute',
-    top: '-10px',
-    left: '-8px',
-    fontSize: '151px',
     fontWeight: '900',
     fontFamily: 'Impact, "Arial Narrow", Arial, sans-serif',
     lineHeight: 1,
@@ -178,7 +218,6 @@ const styles = {
     zIndex: 1,
     userSelect: 'none',
   },
-  /* Primary image — slot machine, smaller, anchored bottom-left */
   categoryImage: {
     position: 'absolute',
     bottom: '28px',
@@ -189,7 +228,6 @@ const styles = {
     objectPosition: 'left bottom',
     zIndex: 2,
   },
-  /* Secondary character image — taller, anchored bottom-right */
   categoryImage2: {
     position: 'absolute',
     bottom: '28px',
@@ -203,38 +241,33 @@ const styles = {
   categoryLabelBar: {
     position: 'absolute',
     bottom: 0,
-  alignItems: 'center',
-    justifyContent: 'center',
     width: '100%',
     height: '28px',
     background: 'linear-gradient(90deg, #163e5e 0%, #266181 100%)',
     display: 'flex',
     alignItems: 'center',
     paddingLeft: '12px',
-    zIndex: 3,
+    zIndex: 4,
+    boxSizing: 'border-box',
   },
   categoryLabel: {
-    fontSize: '14px',
     fontWeight: '590',
     color: '#ffffff',
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
   },
 
-  /* ── Sub-row headers (New / Live Dealer) ── */
+  /* ── Sub-row headers ── */
   rowHeader: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: '12px',
-    border: '0px solid transparent',
   },
   rowTitle: {
     fontSize: '22px',
     fontWeight: '700',
     color: '#121212',
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    border: '0px solid transparent',
-    display: 'block',
   },
   rowViewAll: {
     background: 'none',
@@ -255,11 +288,10 @@ const styles = {
     gap: '12px',
     overflowX: 'auto',
     marginBottom: '12px',
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
   },
   gameCard: {
-    width: '200px',
-    minWidth: '200px',
-    height: '226px',
     borderRadius: '16px',
     overflow: 'hidden',
     position: 'relative',
@@ -280,7 +312,6 @@ const styles = {
     background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%)',
   },
   gameName: {
-    fontSize: '13px',
     fontWeight: '700',
     color: '#ffffff',
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
