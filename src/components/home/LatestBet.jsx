@@ -9,7 +9,7 @@ const mockRows = [
   { game: "Juicy Fruits Multihold",user: "kjd20215", time: "05:30pm", betAmount: "5.00", multiplier: "1.18x", payout: "5.00" },
   { game: "Sugar Rush 1000",       user: "kjd20215", time: "05:30pm", betAmount: "5.00", multiplier: "1.18x", payout: "5.00" },
   { game: "Pinko",                 user: "kjd20215", time: "05:30pm", betAmount: "5.00", multiplier: "1.18x", payout: "5.00" },
-  { game: "Book Of Time",          user: "kjd20215", time: "05:30pm", betAmount: "5.00", multiplier: "1.18x", payout: "5.00" },
+  { game: "Book Of Time",         user: "kjd20215", time: "05:30pm", betAmount: "5.00", multiplier: "1.18x", payout: "5.00" },
   { game: "Sugar Rush 1000",       user: "kjd20215", time: "05:30pm", betAmount: "5.00", multiplier: "1.18x", payout: "5.00" },
   { game: "Juicy Fruits Multihold",user: "kjd20215", time: "05:30pm", betAmount: "5.00", multiplier: "1.18x", payout: "5.00" },
   { game: "Book Of Time",          user: "kjd20215", time: "05:30pm", betAmount: "5.00", multiplier: "1.18x", payout: "5.00" },
@@ -17,9 +17,9 @@ const mockRows = [
 ];
 
 const getImage = (game) => {
-  if (game.startsWith('Book Of Time'))    return bookOfTimeImg;
-  if (game.startsWith('Juicy Fruits'))    return juicyFruitImg;
-  if (game.startsWith('Sugar Rush'))      return sugarRushImg;
+  if (game.startsWith('Book Of Time'))  return bookOfTimeImg;
+  if (game.startsWith('Juicy Fruits'))  return juicyFruitImg;
+  if (game.startsWith('Sugar Rush'))    return sugarRushImg;
   return pinkoImg;
 };
 
@@ -37,11 +37,12 @@ const LatestBet = () => {
         </button>
       </div>
 
-      {/* Table */}
-      <div className="rounded-xl overflow-hidden border border-[#e6e8ec]">
+      {/* ── DESKTOP TABLE (md and up) ── */}
+      <div className="hidden md:block rounded-xl overflow-hidden border border-[#e6e8ec]">
 
-        {/* Header — hidden on small mobile, shown from sm up */}
-        <div className="hidden sm:grid bg-[#f4f6f9] px-3 md:px-4 py-3 text-[11px] md:text-[12px] font-semibold text-[#6b7280]"
+        {/* Header */}
+        <div
+          className="grid bg-[#f4f6f9] px-4 py-3 text-[12px] font-semibold text-[#6b7280]"
           style={{ gridTemplateColumns: '2.5fr 1.2fr 1fr 1.2fr 1.2fr 1.2fr' }}
         >
           <span>Game</span>
@@ -57,22 +58,16 @@ const LatestBet = () => {
           {mockRows.map((row, i) => (
             <div
               key={i}
-              className="grid px-3 md:px-4 py-3 text-[12px] md:text-[13px] items-center"
+              className="grid px-4 py-3 text-[13px] items-center"
               style={{
                 gridTemplateColumns: '2.5fr 1.2fr 1fr 1.2fr 1.2fr 1.2fr',
                 backgroundColor: i % 2 === 0 ? '#f9fafc' : '#ffffff',
               }}
             >
-              {/* Game cell */}
               <span className="flex items-center gap-2 text-[#333]">
-                <img
-                  src={getImage(row.game)}
-                  alt={row.game}
-                  className="w-6 h-6 md:w-7 md:h-7 rounded object-cover shrink-0"
-                />
+                <img src={getImage(row.game)} alt={row.game} className="w-7 h-7 rounded object-cover shrink-0" />
                 <span className="truncate">{row.game}</span>
               </span>
-
               <span className="text-[#333]">{row.user}</span>
               <span className="text-[#333]">{row.time}</span>
               <span className="text-[#333]">$ {row.betAmount}</span>
@@ -82,6 +77,37 @@ const LatestBet = () => {
           ))}
         </div>
       </div>
+
+      {/* ── MOBILE CARDS (below md) ── */}
+      <div className="md:hidden rounded-xl overflow-hidden border border-[#e6e8ec]">
+
+        {/* Mobile column header — Game | Payout */}
+        <div className="flex justify-between bg-[#f4f6f9] px-3 py-2.5 text-[11px] font-semibold text-[#6b7280]">
+          <span>Game</span>
+          <span>Payout</span>
+        </div>
+
+        {/* Mobile rows */}
+        <div className="max-h-[400px] overflow-y-auto divide-y divide-[#f0f0f0]">
+          {mockRows.map((row, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between px-3 py-3"
+              style={{ backgroundColor: i % 2 === 0 ? '#f9fafc' : '#ffffff' }}
+            >
+              {/* Game: image + name */}
+              <span className="flex items-center gap-2 text-[#333] text-[12px] min-w-0 flex-1 mr-3">
+                <img src={getImage(row.game)} alt={row.game} className="w-7 h-7 rounded object-cover shrink-0" />
+                <span className="truncate">{row.game}</span>
+              </span>
+
+              {/* Payout */}
+              <span className="text-[#333] text-[12px] font-medium shrink-0">$ {row.payout}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </section>
   );
 };

@@ -16,24 +16,24 @@ import new6 from '../../assets/images/new6.png';
 const casinoCategories = [
   {
     label: 'Slots', number: '1', image: casino1,
-    imageStyle: { position: 'absolute', top: '8.06px', left: '18.13px', width: '201.52px', height: '205.36px', objectFit: 'contain', zIndex: 2 },
+    imageStyle: { position: 'absolute', top: '8px', left: '10px', width: '180px', height: '185px', objectFit: 'contain', zIndex: 2 },
   },
   {
     label: 'Blackjack', number: '2', image: casino2,
-    imageStyle: { position: 'absolute', top: '-14.1px', left: '-10.07px', width: '226.61px', height: '226.61px', objectFit: 'contain', zIndex: 2 },
+    imageStyle: { position: 'absolute', top: '-10px', left: '-8px', width: '200px', height: '200px', objectFit: 'contain', zIndex: 2 },
   },
   {
     label: 'Roulette', number: '3', image: casino3,
-    imageStyle: { position: 'absolute', top: '-13.09px', left: '0px', width: '222.58px', height: '222.58px', objectFit: 'contain', zIndex: 2 },
+    imageStyle: { position: 'absolute', top: '-10px', left: '0px', width: '195px', height: '195px', objectFit: 'contain', zIndex: 2 },
   },
   {
     label: 'Jackpot', number: '4', image: casino4, image2: casino44,
-    imageStyle:  { position: 'absolute', bottom: '28px', right: '0px',  width: '140px', height: '185px', objectFit: 'contain', zIndex: 3 },
-    image2Style: { position: 'absolute', bottom: '28px', left: '10px',  width: '160px', height: '200px', objectFit: 'contain', zIndex: 2 },
+    imageStyle:  { position: 'absolute', bottom: '28px', right: '0px',  width: '90px',  height: '145px', objectFit: 'contain', zIndex: 3 },
+    image2Style: { position: 'absolute', bottom: '28px', left: '5px',   width: '105px', height: '160px', objectFit: 'contain', zIndex: 2 },
   },
   {
     label: 'Baccarat', number: '5', image: casino5,
-    imageStyle: { position: 'absolute', top: '-10px', left: '-8px', width: '230px', height: '230px', objectFit: 'contain', zIndex: 2 },
+    imageStyle: { position: 'absolute', top: '-10px', left: '-6px', width: '205px', height: '205px', objectFit: 'contain', zIndex: 2 },
   },
 ];
 
@@ -93,19 +93,22 @@ const CasinoAndGames = () => (
       onViewAll={() => {}}
     />
 
-    {/* 2 ── Category strip */}
-    <div className="flex gap-2 md:gap-3 mb-6 w-full h-[160px] md:h-[242px]">
+    {/* 2 ── Category strip — horizontal scroll on mobile, all 5 on desktop */}
+    <div
+      className="flex gap-2 md:gap-3 mb-6 w-full md:h-[242px] overflow-x-auto md:overflow-x-visible"
+      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+    >
       {casinoCategories.map((item) => (
         <div
           key={item.label}
-          className="relative flex-1 h-[160px] md:h-[242px] rounded-2xl overflow-hidden cursor-pointer"
+          className="relative shrink-0 w-[155px] h-[210px] md:flex-1 md:w-auto md:h-[242px] rounded-2xl overflow-hidden cursor-pointer"
           style={{ background: 'linear-gradient(180deg, #c1cfdb 0%, #dbe3e7 100%)' }}
         >
-          {/* Number — behind images */}
+          {/* Number — prominent, behind images */}
           <span
             className="absolute top-[-10px] left-[-8px] font-black leading-none select-none z-[1]"
             style={{
-              fontSize: 'clamp(60px, 8vw, 151px)',
+              fontSize: 'clamp(90px, 13vw, 151px)',
               fontFamily: 'Impact, "Arial Narrow", Arial, sans-serif',
               background: 'linear-gradient(180deg, #1cd4ff 0%, #107f99 100%)',
               WebkitBackgroundClip: 'text',
@@ -120,11 +123,7 @@ const CasinoAndGames = () => (
           <img
             src={item.image}
             alt={item.label}
-            style={item.imageStyle || {
-              position: 'absolute', bottom: '28px', left: '4px',
-              width: '55%', height: '65%', objectFit: 'contain',
-              objectPosition: 'left bottom', zIndex: 2,
-            }}
+            style={item.imageStyle}
           />
 
           {/* Secondary image — Jackpot only */}
@@ -132,11 +131,7 @@ const CasinoAndGames = () => (
             <img
               src={item.image2}
               alt={item.label + ' character'}
-              style={item.image2Style || {
-                position: 'absolute', bottom: '28px', right: '0px',
-                height: '90%', width: '60%', objectFit: 'contain',
-                objectPosition: 'right bottom', zIndex: 3,
-              }}
+              style={item.image2Style}
             />
           )}
 
@@ -145,7 +140,7 @@ const CasinoAndGames = () => (
             className="absolute bottom-0 left-0 w-full h-7 flex items-center justify-center z-[3]"
             style={{ background: 'linear-gradient(90deg, #163e5e 0%, #266181 100%)' }}
           >
-            <span className="text-[11px] md:text-[14px] font-semibold text-white">{item.label}</span>
+            <span className="text-[12px] md:text-[14px] font-semibold text-white">{item.label}</span>
           </div>
         </div>
       ))}
