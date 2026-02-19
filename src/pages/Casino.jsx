@@ -2,26 +2,19 @@ import { useState } from 'react';
 import PromotionsSection from '../components/home/PromotionsSection';
 import HeroBanner from '../components/home/HeroBanner';
 
-import {
-  sportsIconPng,
-  casinoIcon,
-  liveDealerIconAlt,
-} from '../assets/icons';
-
-const sportsTabIcon = sportsIconPng;
-const casinoTabIcon = casinoIcon;
-const liveDealerTabIcon = liveDealerIconAlt;
+import sportsIconPng  from '../assets/icons/sportsicon.png';
+import casinoIconImg  from '../assets/icons/icon-casino2.svg';
+import liveDealerIconImg from '../assets/icons/icon-live-dealer2.svg';
 
 /* ── Filter tabs ── */
-/* static = display only, no toggle; active = clickable toggle */
 const tabs = [
-  { label: 'All',         icon: null,              static: true },
-  { label: 'Sports',      icon: sportsTabIcon,     static: true },
-  { label: 'Casino',      icon: casinoTabIcon,     static: false },
-  { label: 'Live Dealer', icon: liveDealerTabIcon, static: false },
+  { label: 'All',         icon: null,             static: true  },
+  { label: 'Sports',      icon: sportsIconPng,    static: true  },
+  { label: 'Casino',      icon: casinoIconImg,    static: false },
+  { label: 'Live Dealer', icon: liveDealerIconImg, static: false },
 ];
 
-/* ── T&C bullet sections ── */
+/* ── T&C sections ── */
 const tcSections = [
   {
     heading: 'Eligibility',
@@ -66,10 +59,10 @@ const tcSections = [
     points: [
       'The deposited amount is played first, followed by the bonus amount.',
       'Players may forfeit the bonus at any time and receive the remaining balance in the real money wallet.',
-      'Wagering requirements must be completed within 30 days from the date the bonus is credited. After this period, the bonus and any related winnings will expire.',
+      'Wagering requirements must be completed within 30 days from the date the bonus is credited.',
       'No withdrawals will be permitted until the full wagering requirement is met or the bonus is forfeited.',
       'Failure to meet the wagering requirement will result in the forfeiture of the bonus and any winnings derived from it.',
-      'It is strictly prohibited to use the Sportsbook to hold real money funds while an active casino bonus is in play. Violations may result in confiscation of winnings.',
+      'It is strictly prohibited to use the Sportsbook to hold real money funds while an active casino bonus is in play.',
       'The bonus will automatically forfeit once the bonus balance drops below $0.20.',
     ],
   },
@@ -88,28 +81,29 @@ const Casino = ({ defaultTab = 'Casino' }) => {
   const [activeTab, setActiveTab] = useState(defaultTab);
 
   return (
-    <div style={styles.page}>
+    <div className="w-full flex flex-col gap-[32px] pb-10 box-border">
 
-      {/* ── 1. Filter tabs ── */}
-      <div style={styles.tabBar}>
+      {/* ── 1. Filter Tab Bar ── */}
+      <div className="inline-flex self-start items-center gap-1 bg-white rounded-full p-1 shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
         {tabs.map((tab) => (
           <button
             key={tab.label}
-            style={{
-              ...styles.tab,
-              ...(tab.static ? styles.tabStatic : {}),
-              ...(!tab.static && activeTab === tab.label ? styles.tabActive : {}),
-            }}
             onClick={() => !tab.static && setActiveTab(tab.label)}
+            className={`
+              flex items-center gap-1.5 px-4 py-2 rounded-full border-0 text-[14px] font-[510] whitespace-nowrap cursor-pointer transition-all duration-200
+              ${tab.static
+                ? 'text-[#888] cursor-default'
+                : activeTab === tab.label
+                  ? 'bg-[#1CD4FF] text-[#0d0c22] font-semibold shadow-[0_1px_6px_rgba(28,212,255,0.35)]'
+                  : 'bg-transparent text-[#0d0c22]'
+              }
+            `}
           >
             {tab.icon && (
               <img
                 src={tab.icon}
                 alt={tab.label}
-                style={{
-                  ...styles.tabIcon,
-                  ...(!tab.static && activeTab === tab.label ? styles.tabIconActive : {}),
-                }}
+                className={`w-4 h-4 object-contain ${activeTab === tab.label ? 'opacity-100' : 'opacity-70'}`}
               />
             )}
             {tab.label}
@@ -117,59 +111,79 @@ const Casino = ({ defaultTab = 'Casino' }) => {
         ))}
       </div>
 
-      {/* ── 2. Promotions section ── */}
+      {/* ── 2. Promotions Section ── */}
       <PromotionsSection />
 
-      {/* ── 3 & 4. Conditional content by active tab ── */}
+      {/* ── 3. Hero + Content (conditional by tab) ── */}
       {activeTab === 'Casino' ? (
         <>
-          {/* Casino: heading on top of card, HeroBanner below */}
-          <div style={styles.heroWrapper}>
-            <div style={styles.heroHeadingBlock}>
-              <h2 style={styles.heroMainHeading}>Casino Welcome Offer</h2>
-              <p style={styles.heroSubHeading}>Get a 500% Bonus up to $10,000</p>
+          {/* Hero wrapper */}
+          <div className="bg-white rounded-xl px-4 md:px-6 pt-6 pb-0 flex flex-col gap-6 overflow-hidden">
+            <div className="w-full flex flex-col gap-3">
+              <h2 className="text-[28px] md:text-[42px] font-bold text-[#333] uppercase m-0 leading-tight md:whitespace-nowrap">
+                Casino Welcome Offer
+              </h2>
+              <p className="text-[16px] md:text-[24px] font-[510] text-[#333] m-0">
+                Get a 500% Bonus up to $10,000
+              </p>
             </div>
             <HeroBanner />
           </div>
 
-          {/* Casino content */}
-          <div style={styles.contentBlock}>
-            <h3 style={styles.sectionTitle}>Get a 500% Bonus up to $10,000</h3>
-            <p style={styles.sectionLabel}>What are you waiting for?</p>
-            <p style={styles.bodyText}>
+          {/* Content block */}
+          <div className="bg-white rounded-xl p-4 md:p-[22px] flex flex-col">
+            <h3 className="text-[20px] md:text-[25px] font-bold text-[#0d0c22] m-0 mb-2">
+              Get a 500% Bonus up to $10,000
+            </h3>
+            <p className="text-[16px] md:text-[18px] font-semibold text-[#0d0c22] m-0 mb-2">
+              What are you waiting for?
+            </p>
+            <p className="text-[13px] md:text-[14px] text-[#555] leading-[1.7] m-0">
               Kick things up a notch with a 500% deposit match up to $10,000 when you sign up as a new
               customer at TigerBet247. Sounds exciting, right?
             </p>
-            <div style={styles.divider} />
-            <h3 style={styles.sectionTitle}>How to Claim Your Offer</h3>
-            <ol style={styles.orderedList}>
-              <li style={styles.listItem}>Sign up for a new account at TigerBet247</li>
-              <li style={styles.listItem}>Make a deposit of $20 to $2,000</li>
-              <li style={styles.listItem}>Get a casino bonus matching 500% of your deposit amount</li>
-              <li style={styles.listItem}>Play with up to $12,000</li>
+
+            <div className="h-px bg-[#f0f0f0] my-5" />
+
+            <h3 className="text-[20px] md:text-[25px] font-bold text-[#0d0c22] m-0 mb-3">
+              How to Claim Your Offer
+            </h3>
+            <ol className="m-0 pl-7 flex flex-col gap-2 list-decimal">
+              {['Sign up for a new account at TigerBet247', 'Make a deposit of $20 to $2,000', 'Get a casino bonus matching 500% of your deposit amount', 'Play with up to $12,000'].map((item, i) => (
+                <li key={i} className="text-[13px] md:text-[14px] text-[#555] leading-[1.6]">{item}</li>
+              ))}
             </ol>
-            <div style={styles.divider} />
-            <h3 style={styles.sectionTitle}>Terms and Conditions – 500% Deposit Bonus for New Customers</h3>
+
+            <div className="h-px bg-[#f0f0f0] my-5" />
+
+            <h3 className="text-[20px] md:text-[25px] font-bold text-[#0d0c22] m-0 mb-3">
+              Terms and Conditions – 500% Deposit Bonus for New Customers
+            </h3>
+
             {tcSections.map((sec) => (
-              <div key={sec.heading} style={styles.tcBlock}>
-                <p style={styles.tcHeading}>{sec.heading}</p>
-                <ul style={styles.bulletList}>
+              <div key={sec.heading} className="mt-4">
+                <p className="text-[18px] md:text-[22px] font-bold text-[#0d0c22] m-0 mb-2">{sec.heading}</p>
+                <ul className="m-0 pl-7 list-disc flex flex-col gap-1.5">
                   {sec.points.map((pt, i) => (
-                    <li key={i} style={styles.bulletItem}>{pt}</li>
+                    <li key={i} className="text-[13px] md:text-[13.5px] text-[#555] leading-[1.65]">{pt}</li>
                   ))}
                 </ul>
-                {sec.note && <p style={styles.tcNote}>{sec.note}</p>}
+                {sec.note && (
+                  <p className="text-[12px] md:text-[13px] italic text-[#777] mt-2 m-0">{sec.note}</p>
+                )}
               </div>
             ))}
           </div>
         </>
       ) : (
         <>
-          {/* Live Dealer: heading on top of card, HeroBanner below */}
-          <div style={styles.heroWrapper}>
-            <div style={styles.heroHeadingBlock}>
-              <h2 style={styles.heroMainHeading}>Live Casino Welcome Reward</h2>
-              <p style={styles.heroSubHeading}>
+          {/* Live Dealer hero */}
+          <div className="bg-white rounded-xl px-4 md:px-6 pt-6 pb-0 flex flex-col gap-6 overflow-hidden">
+            <div className="w-full flex flex-col gap-3">
+              <h2 className="text-[28px] md:text-[42px] font-bold text-[#333] uppercase m-0 leading-tight">
+                Live Casino Welcome Reward
+              </h2>
+              <p className="text-[14px] md:text-[24px] font-[510] text-[#333] m-0">
                 Enter the world of live gaming with Tigerbet247's immersive Live Casino welcome reward.
               </p>
             </div>
@@ -177,28 +191,39 @@ const Casino = ({ defaultTab = 'Casino' }) => {
           </div>
 
           {/* Live Dealer content */}
-          <div style={styles.contentBlock}>
-            <h3 style={styles.sectionTitle}>Live Dealer Bonus</h3>
-            <p style={styles.sectionLabel}>What are you waiting for?</p>
-            <ul style={styles.bulletList}>
-              <li style={styles.bulletItem}>Extra bonus on your first Live Casino deposit.</li>
-              <li style={styles.bulletItem}>Use your bonus on popular games like Live Roulette, Blackjack, Baccarat, and Game Shows.</li>
+          <div className="bg-white rounded-xl p-4 md:p-[22px] flex flex-col">
+            <h3 className="text-[20px] md:text-[25px] font-bold text-[#0d0c22] m-0 mb-2">
+              Live Dealer Bonus
+            </h3>
+            <p className="text-[16px] md:text-[18px] font-semibold text-[#0d0c22] m-0 mb-2">
+              What are you waiting for?
+            </p>
+            <ul className="m-0 pl-7 list-disc flex flex-col gap-1.5">
+              <li className="text-[13px] md:text-[14px] text-[#555] leading-[1.65]">Extra bonus on your first Live Casino deposit.</li>
+              <li className="text-[13px] md:text-[14px] text-[#555] leading-[1.65]">Use your bonus on popular games like Live Roulette, Blackjack, Baccarat, and Game Shows.</li>
             </ul>
-            <div style={styles.divider} />
-            <h3 style={styles.sectionTitle}>How It Works</h3>
-            <ol style={styles.orderedList}>
-              <li style={styles.listItem}>Register a new account</li>
-              <li style={styles.listItem}>Make a first deposit on Live Casino games</li>
-              <li style={styles.listItem}>The Live Casino bonus is credited to your account</li>
-              <li style={styles.listItem}>Play with real dealers in real time</li>
+
+            <div className="h-px bg-[#f0f0f0] my-5" />
+
+            <h3 className="text-[20px] md:text-[25px] font-bold text-[#0d0c22] m-0 mb-3">How It Works</h3>
+            <ol className="m-0 pl-7 list-decimal flex flex-col gap-2">
+              {['Register a new account', 'Make a first deposit on Live Casino games', 'The Live Casino bonus is credited to your account', 'Play with real dealers in real time'].map((item, i) => (
+                <li key={i} className="text-[13px] md:text-[14px] text-[#555] leading-[1.6]">{item}</li>
+              ))}
             </ol>
-            <div style={styles.divider} />
-            <h3 style={styles.sectionTitle}>Terms You Should Know</h3>
-            <ul style={styles.bulletList}>
-              <li style={styles.bulletItem}>Live Casino games contribute to wagering at their own rate</li>
-              <li style={styles.bulletItem}>Some games may offer higher contribution rates toward clearing the bonus</li>
-              <li style={styles.bulletItem}>Wagering requirements must be completed before cashing out</li>
-              <li style={styles.bulletItem}>Maximum bet limits apply when playing with bonus funds</li>
+
+            <div className="h-px bg-[#f0f0f0] my-5" />
+
+            <h3 className="text-[20px] md:text-[25px] font-bold text-[#0d0c22] m-0 mb-3">Terms You Should Know</h3>
+            <ul className="m-0 pl-7 list-disc flex flex-col gap-1.5">
+              {[
+                'Live Casino games contribute to wagering at their own rate',
+                'Some games may offer higher contribution rates toward clearing the bonus',
+                'Wagering requirements must be completed before cashing out',
+                'Maximum bet limits apply when playing with bonus funds',
+              ].map((item, i) => (
+                <li key={i} className="text-[13px] md:text-[14px] text-[#555] leading-[1.65]">{item}</li>
+              ))}
             </ul>
           </div>
         </>
@@ -206,216 +231,6 @@ const Casino = ({ defaultTab = 'Casino' }) => {
 
     </div>
   );
-};
-
-/* ════════════════════════════════════════════════════════ */
-const styles = {
-
-  page: {
-    width: '1189px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '32px',
-    paddingBottom: '40px',
-    boxSizing: 'border-box',
-  },
-
-  /* ── Tab bar — single rounded pill container ── */
-  tabBar: {
-    display: 'inline-flex',
-    alignSelf: 'flex-start',
-    alignItems: 'center',
-    gap: '4px',
-    backgroundColor: '#ffffff',
-    borderRadius: '999px',
-    padding: '4px',
-    border: '0px solid transparent',
-    boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
-  },
-  tab: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    padding: '8px 18px',
-    borderRadius: '999px',
-    border: '0px solid transparent',
-    background: 'transparent',
-    color: '#0d0c22',
-    fontSize: '14px',
-    fontWeight: '510',
-    cursor: 'pointer',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    whiteSpace: 'nowrap',
-  },
-  tabActive: {
-    background: '#1CD4FF',
-    color: '#0d0c22',
-    fontWeight: '600',
-    boxShadow: '0 1px 6px rgba(28,212,255,0.35)',
-  },
-  /* Static tabs — no pointer, slightly muted */
-  tabStatic: {
-    cursor: 'default',
-    color: '#888888',
-  },
-  tabIcon: {
-    width: '16px',
-    height: '16px',
-    objectFit: 'contain',
-    opacity: 0.7,
-  },
-  tabIconActive: {
-    opacity: 1,
-  },
-
-  /* ── White card wrapping heading + banner ── */
-  heroWrapper: {
-    backgroundColor: '#ffffff',
-    borderRadius: '12px',
-    padding: '24px 24px 0px 24px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-    border: '0px solid transparent',
-    overflow: 'hidden',
-  },
-
-  /* Heading block: top of card, full width so text fits in one line, gap:12 */
-  heroHeadingBlock: {
-    width: '100%',
-    minHeight: '96px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-    border: '0px solid transparent',
-  },
-
-  /* Heading block: below banner (Live Dealer), full width, padding */
-  heroHeadingBlockBelow: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-    padding: '24px 24px',
-    boxSizing: 'border-box',
-    border: '0px solid transparent',
-  },
-
-  heroMainHeading: {
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    fontWeight: '700',
-    fontSize: '42px',
-    lineHeight: '64px',
-    letterSpacing: '0',
-    textTransform: 'uppercase',
-    color: '#333333',
-    margin: 0,
-    whiteSpace: 'nowrap',
-    border: '0px solid transparent',
-  },
-
-  heroSubHeading: {
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    fontWeight: '510',
-    fontSize: '24px',
-    lineHeight: '20px',
-    letterSpacing: '0',
-    color: '#333333',
-    margin: 0,
-    whiteSpace: 'nowrap',
-    border: '0px solid transparent',
-  },
-
-  /* ── Content block ── */
-  contentBlock: {
-    backgroundColor: '#ffffff',
-    borderRadius: '12px',
-    padding: '22px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0px',
-    border: '0px solid transparent',
-  },
-
-  divider: {
-    height: '1px',
-    backgroundColor: '#f0f0f0',
-    margin: '20px 0',
-    border: '0px solid transparent',
-  },
-  sectionTitle: {
-    fontSize: '25px',
-    fontWeight: '700',
-    color: '#0d0c22',
-    margin: '0 0 10px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    border: '0px solid transparent',
-  },
-  sectionLabel: {
-    fontSize: '18px',
-    fontWeight: '600',
-    color: '#0d0c22',
-    margin: '0 0 8px',
-    border: '0px solid transparent',
-  },
-  bodyText: {
-    fontSize: '14px',
-    fontWeight: '400',
-    color: '#555555',
-    lineHeight: 1.7,
-    margin: 0,
-    border: '0px solid transparent',
-  },
-  orderedList: {
-    margin: '0',
-    paddingLeft: '28px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    border: '0px solid transparent',
-    listStyleType: 'decimal',
-  },
-  listItem: {
-    fontSize: '14px',
-    color: '#555555',
-    lineHeight: 1.6,
-    display: 'list-item',
-    listStyleType: 'decimal',
-  },
-
-  /* T&C */
-  tcBlock: {
-    marginTop: '16px',
-    border: '0px solid transparent',
-  },
-  tcHeading: {
-    fontSize: '22px',
-    fontWeight: '700',
-    color: '#0d0c22',
-    margin: '0 0 8px',
-    border: '0px solid transparent',
-  },
-  bulletList: {
-    margin: 0,
-    paddingLeft: '28px',
-    listStyleType: 'disc',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '6px',
-    border: '0px solid transparent',
-  },
-  bulletItem: {
-    fontSize: '13.5px',
-    color: '#555555',
-    lineHeight: 1.65,
-  },
-  tcNote: {
-    fontSize: '13px',
-    fontStyle: 'italic',
-    color: '#777777',
-    margin: '8px 0 0',
-    border: '0px solid transparent',
-  },
 };
 
 export default Casino;
