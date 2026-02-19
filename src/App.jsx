@@ -17,8 +17,8 @@ import ResponsibleGaming from './pages/about/ResponsibleGaming';
 import SelfExclusionPolicy from './pages/about/SelfExclusionPolicy';
 import TermsAndConditions from './pages/about/TermsAndConditions';
 
-import LoginPage from './pages/LoginPage'; //  add this
-import Register from './components/layout/Register';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
 
           {/* Routes WITHOUT Navbar */}
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* Routes WITH Navbar (MainLayout) */}
           <Route
