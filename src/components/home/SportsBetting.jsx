@@ -86,6 +86,8 @@ const styles = {
     width: '1189px',
     maxWidth: '100%',
     boxSizing: 'border-box',
+    border: 'none',
+    outline: 'none',
   },
 
   iconImg: {

@@ -39,6 +39,8 @@ const styles = {
     padding: '20px',
     marginBottom: '16px',
     width: '1189px',
+    border: 'none',
+    outline: 'none',
   },
   iconImg: {
     width: '60px',
