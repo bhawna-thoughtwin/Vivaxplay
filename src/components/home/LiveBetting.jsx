@@ -51,6 +51,8 @@ const styles = {
     overflowX: 'auto',
     width: '1240px',
     maxWidth: '100%',
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
   },
   dots: {
     display: 'flex',

@@ -77,7 +77,18 @@ const LoginPage = () => {
                         style={styles.eyeBtn}
                         onClick={() => setShowPassword(p => !p)}
                       >
-                        {showPassword ? '🙈' : '👁'}
+                        {showPassword ? (
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                            <line x1="1" y1="1" x2="23" y2="23"/>
+                          </svg>
+                        ) : (
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                          </svg>
+                        )}
                       </button>
                     </div>
                   </div>
@@ -252,7 +263,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '20px',
+    gap: '32px',
   },
 
   heading: {
@@ -323,12 +334,15 @@ const styles = {
 
   eyeBtn: {
     position: 'absolute',
-    right: '12px',
+    right: '14px',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    fontSize: '16px',
     padding: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    lineHeight: 0,
   },
 
   rememberRow: {
@@ -361,25 +375,43 @@ const styles = {
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    fontSize: '13px',
-    color: '#1cd4ff',
+    fontSize: '14px',
+    fontWeight: '590',
+    fontStyle: 'normal',
+    color: '#333333',
     fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
+    lineHeight: '25px',
+    letterSpacing: '0',
+    verticalAlign: 'middle',
+    textDecoration: 'underline',
+    textDecorationStyle: 'solid',
     padding: 0,
   },
 
   submitBtn: {
-    width: '100%',
-    padding: '14px',
-    background: 'linear-gradient(180deg, #1cd4ff 0%, #0fb8e0 100%)',
-    border: 'none',
-    borderRadius: '8px',
-    color: '#ffffff',
-    fontSize: '15px',
-    fontWeight: '700',
+    width: '477px',
+    height: '44px',
+    background: '#1CD4FF',
+    border: '1px solid #1CD4FF',
+    borderRadius: '4px',
+    color: '#333333',
+    fontSize: '14px',
+    fontWeight: '590',
+    fontStyle: 'normal',
     cursor: 'pointer',
-    letterSpacing: '1px',
+    letterSpacing: '0',
+    lineHeight: '20px',
+    textTransform: 'uppercase',
     fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-    marginTop: '4px',
+    paddingTop: '4px',
+    paddingBottom: '4px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    gap: '4px',
+    boxSizing: 'border-box',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   dividerRow: {
@@ -404,18 +436,24 @@ const styles = {
   socialRow: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
     gap: '16px',
+    width: '328px',
+    margin: '0 auto',
   },
 
   socialBtn: {
+    width: '70px',
+    height: '44px',
     background: 'none',
     border: '1px solid #e0e0e0',
-    borderRadius: '10px',
-    padding: '10px 16px',
+    borderRadius: '8px',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    boxSizing: 'border-box',
+    flexShrink: 0,
   },
 
   socialIcon: {

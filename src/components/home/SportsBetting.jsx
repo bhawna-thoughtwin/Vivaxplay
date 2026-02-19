@@ -173,6 +173,8 @@ const styles = {
     gap: '12px',
     flexWrap: 'nowrap',
     overflowX: 'auto',
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
   },
 };
 

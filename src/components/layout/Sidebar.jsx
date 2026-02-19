@@ -62,6 +62,7 @@ const LiveBadge = () => (
 const Sidebar = () => {
   const { sidebarOpen } = useApp();
   const [expanded, setExpanded] = useState({});
+  const [activeSubItem, setActiveSubItem] = useState(null);
   const navigate = useNavigate();
 
   if (!sidebarOpen) return null;
@@ -117,8 +118,14 @@ const Sidebar = () => {
                 {item.children.map((child) => (
                   <button
                     key={child.label}
-                    style={styles.submenuItem}
-                    onClick={() => navigate(child.path)}
+                    style={{
+                      ...styles.submenuItem,
+                      ...(activeSubItem === child.label ? styles.submenuItemActive : {}),
+                    }}
+                    onClick={() => {
+                      setActiveSubItem(child.label);
+                      navigate(child.path);
+                    }}
                   >
                     {child.label}
                   </button>
@@ -260,6 +267,13 @@ const styles = {
     textAlign: 'left',
     padding: '7px 0',
     lineHeight: 1.4,
+  },
+  submenuItemActive: {
+    backgroundColor: '#1cd4ff',
+    color: '#ffffff',
+    fontWeight: '600',
+    borderRadius: '6px',
+    padding: '7px 10px',
   },
 };
 
