@@ -3,7 +3,7 @@ import PromotionCard from '../cards/PromotionCard';
 import promo1 from '../../assets/images/promo1.png';
 import promo2 from '../../assets/images/promo2.png';
 import promo3 from '../../assets/images/promo3.png';
-import promotionsIcon from '../../assets/icons/volleyball-player 2.png';
+import { volleyballPlayer2 as promotionsIcon } from '../../assets/icons';
 
 const promotions = [
   {

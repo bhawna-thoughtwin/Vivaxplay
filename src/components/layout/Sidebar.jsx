@@ -4,7 +4,7 @@ import { useApp } from '../../context/AppContext';
 import SearchBar from '../common/SearchBar';
 
 import sportsIcon     from '../../assets/icons/sportsicon.png';
-import liveSportsIcon from '../../assets/icons/Live sports.png';
+import liveSportsIcon from '../../assets/icons/Livesports.png';
 import casinoIcon     from '../../assets/icons/icon-casino2.svg';
 import liveDealerIcon from '../../assets/icons/icon-live-dealer2.svg';
 import promotionsIcon from '../../assets/icons/icon-promotions2.svg';

@@ -1,5 +1,5 @@
 import SectionHeader from '../common/SectionHeader';
-import casinoIcon from '../../assets/icons/volleyball-player 1.png';
+import { volleyballPlayer1 as casinoIcon } from '../../assets/icons';
 import casino1 from '../../assets/images/casinoandgames1.png';
 import casino2 from '../../assets/images/casinoandgmaes2.png';
 import casino3 from '../../assets/images/casinoandgames3.png';

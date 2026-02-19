@@ -1,43 +1,20 @@
-import searchIcon from '../../assets/icons/icon-search.svg';
+import { searchIcon } from "../../assets/icons";
 
 const SearchBar = () => {
   return (
-    <div style={styles.wrapper}>
-      
+    <div className="flex items-center gap-2 px-3 py-2 bg-[#f5f5f5] border border-[#e0e0e0] rounded-[2px]">
       <input
         type="text"
         placeholder="Search Game..."
-        style={styles.input}
+        className="w-full bg-transparent border-none outline-none text-[#4a4a4a] text-[14px] font-inherit placeholder:text-[#4a4a4a]/70"
       />
-      <img src={searchIcon} alt="search" style={styles.icon} />
+      <img
+        src={searchIcon}
+        alt="search"
+        className="w-4 h-4 opacity-50"
+      />
     </div>
   );
-};
-
-const styles = {
-  wrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderRadius: '2px',
-    padding: '8px 12px',
-    gap: '8px',
-    border: '1px solid #e0e0e0',
-  },
-  icon: {
-    width: '16px',
-    height: '16px',
-    opacity: 0.5,
-  },
-  input: {
-    background: 'none',
-    border: 'none',
-    outline: 'none',
-    color: '#4a4a4a',
-    fontSize: '14px',
-    width: '100%',
-    fontFamily: 'inherit',
-  },
 };
 
 export default SearchBar;

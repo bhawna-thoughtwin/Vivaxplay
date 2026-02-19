@@ -3,7 +3,7 @@ import PromotionsSection from '../components/home/PromotionsSection';
 import CasinoAndGames from '../components/home/CasinoAndGames';
 import LiveBetting from '../components/home/LiveBetting';
 import SportsBetting from '../components/home/SportsBetting';
-import SportsHero from '../components/home/SportsHeroSection';
+import SportsHero from "../components/home/SportsHerosection"; // Adjust the path as needed
 import FreeSpinBonus from '../components/home/FreeSpinBonus';
 import LatestBet from '../components/home/LatestBet';
 

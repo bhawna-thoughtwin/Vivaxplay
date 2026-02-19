@@ -9,7 +9,7 @@ const SportsHero = () => {
 
       {/* Teal card — sits at the bottom of the wrapper */}
       <div
-        className="absolute bottom-0 left-0 right-0 rounded-xl flex items-center overflow-visible box-border pr-5 md:pr-10"
+        className="absolute bottom-0 left-0 right-0 rounded-xl flex items-center overflow-visible box-border pl-5 md:pl-10 pr-5 md:pr-10"
         style={{
           height: 'clamp(220px, 32vw, 406px)',
           background: 'linear-gradient(0deg, #025877, #025877)',

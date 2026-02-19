@@ -1,6 +1,6 @@
 import SectionHeader from '../common/SectionHeader';
 import MatchCard from '../cards/MatchCard';
-import sportsIcon from '../../assets/icons/volleyball-player 3.png';
+import { volleyballPlayer3 as sportsIcon } from '../../assets/icons';
 import sport1 from '../../assets/images/sport1.png';
 import sport2 from '../../assets/images/sport2.png';
 import sport3 from '../../assets/images/sport3.png';

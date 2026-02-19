@@ -1,6 +1,6 @@
 import SectionHeader from '../common/SectionHeader';
 import MatchCard from '../cards/MatchCard';
-import liveSportsIcon from '../../assets/icons/volleyball-player 1 (1).png';
+import { volleyballPlayer1Alt as liveSportsIcon } from '../../assets/icons';
 
 const matches = [
   { league: 'Soccer | La Liga 2026', team1: 'FC Barcelona', team2: 'Real Madrid', score1: 1, score2: 0, odds: ['1.85', '2.05', '+54'] },

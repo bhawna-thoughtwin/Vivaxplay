@@ -1,11 +1,20 @@
 import { useApp } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
-import logoSvg from '../../assets/icons/logo.svg';
-import worldIcon from '../../assets/icons/icon-world.svg';
-import sportsIcon from '../../assets/icons/icon-sports.svg';
-import casinoIcon from '../../assets/icons/icon-casino.svg';
-import liveDealerIcon from '../../assets/icons/icon-live-dealer.svg';
-import promotionsIcon from '../../assets/icons/icon-promotions.svg';
+import {
+  logo,
+  worldIcon,
+  sportsIconAlt,
+  casinoIconAlt,
+  liveDealerIconAlt,
+  promotionsIconAlt,
+} from '../../assets/icons';
+
+// Alias for compatibility
+const logoSvg = logo;
+const sportsIcon = sportsIconAlt;
+const casinoIcon = casinoIconAlt;
+const liveDealerIcon = liveDealerIconAlt;
+const promotionsIcon = promotionsIconAlt;
 
 const navLinks = [
   { label: 'Sports',      path: '/sports',      icon: sportsIcon },

@@ -2,9 +2,15 @@ import { useState } from 'react';
 import PromotionsSection from '../components/home/PromotionsSection';
 import HeroBanner from '../components/home/HeroBanner';
 
-import sportsTabIcon     from '../assets/icons/sportsicon.png';
-import casinoTabIcon     from '../assets/icons/icon-casino2.svg';
-import liveDealerTabIcon from '../assets/icons/icon-live-dealer2.svg';
+import {
+  sportsIconPng,
+  casinoIcon,
+  liveDealerIconAlt,
+} from '../assets/icons';
+
+const sportsTabIcon = sportsIconPng;
+const casinoTabIcon = casinoIcon;
+const liveDealerTabIcon = liveDealerIconAlt;
 
 /* ── Filter tabs ── */
 /* static = display only, no toggle; active = clickable toggle */
