@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
-import useWindowWidth from '../../hooks/useWindowWidth';
 import SearchBar from '../common/SearchBar';
 
 import sportsIcon      from '../../assets/icons/sportsicon.png';
@@ -14,7 +13,7 @@ import bonusIcon       from '../../assets/icons/icon-bonus.svg';
 import supportIcon     from '../../assets/icons/icon-support.svg';
 import aboutIcon       from '../../assets/icons/icon-about.svg';
 
-/* ── About sub-links ── */
+/* ── About sub-links (clickable — navigate to page) ── */
 const aboutLinks = [
   { label: 'AML Policy',            path: '/about/aml-policy' },
   { label: 'Cookie Policy',         path: '/about/cookie-policy' },
@@ -26,7 +25,7 @@ const aboutLinks = [
   { label: 'Terms & Conditions',    path: '/about/terms-and-conditions' },
 ];
 
-/* ── Main nav items ── */
+/* ── All main nav items — static display only, except items with path or expandable ── */
 const menuItems = [
   { label: 'Sports',          icon: sportsIcon },
   { label: 'Live Sports',     icon: liveSportsIcon },
@@ -39,27 +38,19 @@ const menuItems = [
   { label: 'About Us',        icon: aboutIcon, expandable: true, children: aboutLinks },
 ];
 
-/* ── Bottom tab items (mobile only) ── */
-const bottomTabs = [
-  { label: 'Sports',      icon: sportsIcon,      path: '/sports' },
-  { label: 'Casino',      icon: casinoIcon,      path: '/casino' },
-  { label: 'Live',        icon: liveDealerIcon,  path: '/live-dealer' },
-  { label: 'Promos',      icon: promotionsIcon,  path: '/promotions' },
-  { label: 'More',        icon: aboutIcon,       path: null },
-];
-
 /* ── Chevron SVGs ── */
 const ChevronDown = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M6 9l6 6 6-6" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 const ChevronUp = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M18 15l-6-6-6 6" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
+/* ── LIVE badge ── */
 const LiveBadge = () => (
   <span style={styles.liveBadge}>
     <span style={styles.liveDot} />
@@ -69,67 +60,27 @@ const LiveBadge = () => (
 
 /* ══════════════════════════════════════════════════════════ */
 const Sidebar = () => {
-  const { sidebarOpen, activeNav, setActiveNav } = useApp();
+  const { sidebarOpen } = useApp();
   const [expanded, setExpanded] = useState({});
+  const [activeSubItem, setActiveSubItem] = useState(null);
   const navigate = useNavigate();
-  const { isMobile } = useWindowWidth();
 
-  /* ── Mobile: bottom tab bar ── */
-  if (isMobile) {
-    return (
-      <nav style={styles.bottomTabBar}>
-        {bottomTabs.map((tab) => {
-          const isActive = activeNav === tab.label;
-          return (
-            <button
-              key={tab.label}
-              style={styles.bottomTab}
-              onClick={() => {
-                if (tab.path) {
-                  setActiveNav(tab.label);
-                  navigate(tab.path);
-                }
-              }}
-            >
-              <img
-                src={tab.icon}
-                alt={tab.label}
-                style={{
-                  ...styles.bottomTabIcon,
-                  ...(isActive ? styles.bottomTabIconActive : {}),
-                }}
-              />
-              <span
-                style={{
-                  ...styles.bottomTabLabel,
-                  ...(isActive ? styles.bottomTabLabelActive : {}),
-                }}
-              >
-                {tab.label}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
-    );
-  }
-
-  /* ── Desktop: sidebar drawer ── */
   if (!sidebarOpen) return null;
 
   return (
     <aside style={styles.sidebar}>
 
-      {/* Search bar */}
+      {/* ── Search bar (static) ── */}
       <div style={styles.searchWrapper}>
         <SearchBar />
       </div>
 
-      {/* Navigation menu */}
+      {/* ── Navigation menu ── */}
       <nav style={styles.menu}>
         {menuItems.map((item) => (
           <div key={item.label}>
 
+            {/* About Us — clickable to expand/collapse */}
             {item.expandable ? (
               <button
                 style={styles.menuItem}
@@ -144,6 +95,7 @@ const Sidebar = () => {
                 </span>
               </button>
             ) : item.path ? (
+              /* Items with a path — clickable button that navigates */
               <button
                 style={styles.menuItem}
                 onClick={() => navigate(item.path)}
@@ -152,6 +104,7 @@ const Sidebar = () => {
                 <span style={styles.menuLabel}>{item.label}</span>
               </button>
             ) : (
+              /* All other items — static, non-clickable display */
               <div style={styles.menuItemStatic}>
                 <img src={item.icon} alt={item.label} style={styles.menuIcon} />
                 <span style={styles.menuLabel}>{item.label}</span>
@@ -159,13 +112,20 @@ const Sidebar = () => {
               </div>
             )}
 
+            {/* About Us sub-links */}
             {item.children && expanded[item.label] && (
               <div style={styles.submenu}>
                 {item.children.map((child) => (
                   <button
                     key={child.label}
-                    style={styles.submenuItem}
-                    onClick={() => navigate(child.path)}
+                    style={{
+                      ...styles.submenuItem,
+                      ...(activeSubItem === child.label ? styles.submenuItemActive : {}),
+                    }}
+                    onClick={() => {
+                      setActiveSubItem(child.label);
+                      navigate(child.path);
+                    }}
                   >
                     {child.label}
                   </button>
@@ -182,7 +142,7 @@ const Sidebar = () => {
 /* ══════════════════════════════════════════════════════════ */
 const styles = {
 
-  /* ── Desktop sidebar ── */
+  /* ── Outer aside ── */
   sidebar: {
     width: '300px',
     minWidth: '300px',
@@ -200,11 +160,13 @@ const styles = {
     boxSizing: 'border-box',
   },
 
+  /* ── Search wrapper — no border ── */
   searchWrapper: {
     padding: '16px 16px 12px',
     border: '0px solid transparent',
   },
 
+  /* ── Nav menu ── */
   menu: {
     flex: 1,
     padding: '8px 0',
@@ -212,6 +174,7 @@ const styles = {
     flexDirection: 'column',
   },
 
+  /* Static nav row (div, not button — no pointer, no interaction) */
   menuItemStatic: {
     display: 'flex',
     alignItems: 'center',
@@ -226,6 +189,7 @@ const styles = {
     border: '0px solid transparent',
   },
 
+  /* About Us button row */
   menuItem: {
     display: 'flex',
     alignItems: 'center',
@@ -256,6 +220,7 @@ const styles = {
     color: '#0d0c22',
   },
 
+  /* LIVE badge */
   liveBadge: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -283,6 +248,7 @@ const styles = {
     flexShrink: 0,
   },
 
+  /* ── About Us sub-menu ── */
   submenu: {
     display: 'flex',
     flexDirection: 'column',
@@ -302,52 +268,12 @@ const styles = {
     padding: '7px 0',
     lineHeight: 1.4,
   },
-
-  /* ── Mobile bottom tab bar ── */
-  bottomTabBar: {
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: '64px',
-    backgroundColor: '#1f1f1f',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    zIndex: 1000,
-    borderTop: '1px solid #2a2a2a',
-  },
-  bottomTab: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '4px',
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    flex: 1,
-    padding: '6px 0',
-  },
-  bottomTabIcon: {
-    width: '22px',
-    height: '22px',
-    objectFit: 'contain',
-    filter: 'brightness(10) opacity(0.5)',
-  },
-  bottomTabIconActive: {
-    filter: 'brightness(0) saturate(100%) invert(72%) sepia(93%) saturate(400%) hue-rotate(155deg) brightness(101%) contrast(101%)',
-    opacity: 1,
-  },
-  bottomTabLabel: {
-    fontSize: '10px',
-    fontWeight: '500',
-    color: '#ffffff88',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-  },
-  bottomTabLabelActive: {
-    color: '#1cd4ff',
-    fontWeight: '700',
+  submenuItemActive: {
+    backgroundColor: '#1cd4ff',
+    color: '#ffffff',
+    fontWeight: '600',
+    borderRadius: '6px',
+    padding: '7px 10px',
   },
 };
 

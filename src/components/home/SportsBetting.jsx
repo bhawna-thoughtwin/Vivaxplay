@@ -1,6 +1,5 @@
 import SectionHeader from '../common/SectionHeader';
 import MatchCard from '../cards/MatchCard';
-import useWindowWidth from '../../hooks/useWindowWidth';
 import sportsIcon from '../../assets/icons/volleyball-player 3.png';
 import sport1 from '../../assets/images/sport1.png';
 import sport2 from '../../assets/images/sport2.png';
@@ -30,20 +29,14 @@ const recommendationMatches = [
   { league: 'Soccer | La Liga 2026', team1: 'FC Barcelona', team2: 'Real Madrid', score1: 1, score2: 0, odds: ['1.85', '2.05', '+54'] },
 ];
 
-const CardRow = ({ title, matches, isMobile }) => (
+/* Reusable card row with section sub-header */
+const CardRow = ({ title, matches }) => (
   <div style={styles.cardSection}>
     <div style={styles.cardSectionHeader}>
-      <span style={{
-        ...styles.cardSectionTitle,
-        fontSize: isMobile ? '18px' : '22px',
-      }}>{title}</span>
+      <span style={styles.cardSectionTitle}>{title}</span>
       <button style={styles.viewAllBtn}>VIEW ALL &rsaquo;</button>
     </div>
-    <div style={{
-      ...styles.cardGrid,
-      flexDirection: isMobile ? 'column' : 'row',
-      gap: isMobile ? '10px' : '12px',
-    }}>
+    <div style={styles.cardGrid}>
       {matches.map((match, i) => (
         <MatchCard key={i} {...match} isLive={false} />
       ))}
@@ -52,15 +45,9 @@ const CardRow = ({ title, matches, isMobile }) => (
 );
 
 const SportsBetting = () => {
-  const { isMobile } = useWindowWidth();
-
   return (
-    <section style={{
-      ...styles.section,
-      width: '100%',
-      padding: isMobile ? '14px' : '20px',
-      boxSizing: 'border-box',
-    }}>
+    <section style={styles.section}>
+      {/* Header */}
       <SectionHeader
         icon={<img src={sportsIcon} alt="Sports Betting" style={styles.iconImg} />}
         title="Sports Betting"
@@ -72,29 +59,20 @@ const SportsBetting = () => {
       <div style={styles.sportsStrip}>
         {sports.map((sport) => (
           <div key={sport.label} style={styles.sportItem}>
-            <div style={{
-              ...styles.imgWrapper,
-              width: isMobile ? '70px' : '180px',
-              height: isMobile ? '90px' : '200px',
-            }}>
-              <span style={{
-                ...styles.number,
-                fontSize: isMobile ? '70px' : '160px',
-              }}>{sport.number}</span>
-              <img src={sport.image} alt={sport.label} style={{
-                ...styles.image,
-                height: isMobile ? '80px' : '190px',
-              }} />
+            {/* Big number sits behind the image */}
+            <div style={styles.imgWrapper}>
+              <span style={styles.number}>{sport.number}</span>
+              <img src={sport.image} alt={sport.label} style={styles.image} />
             </div>
           </div>
         ))}
       </div>
 
       {/* Trending */}
-      <CardRow title="Trending" matches={trendingMatches} isMobile={isMobile} />
+      <CardRow title="Trending" matches={trendingMatches} />
 
       {/* Recommendations */}
-      <CardRow title="Recommendations" matches={recommendationMatches} isMobile={isMobile} />
+      <CardRow title="Recommendations" matches={recommendationMatches} />
     </section>
   );
 };
@@ -103,14 +81,24 @@ const styles = {
   section: {
     backgroundColor: '#ffffff',
     borderRadius: '12px',
+    padding: '20px',
     marginBottom: '16px',
+    width: '1189px',
+    maxWidth: '100%',
+    boxSizing: 'border-box',
+    border: 'none',
+    outline: 'none',
   },
+
   iconImg: {
     width: '60px',
     height: '60px',
   },
+
+  /* Sports strip */
   sportsStrip: {
     display: 'flex',
+    gap: '0px',
     marginBottom: '24px',
     overflow: 'hidden',
   },
@@ -121,6 +109,8 @@ const styles = {
   },
   imgWrapper: {
     position: 'relative',
+    width: '180px',
+    height: '200px',
     display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'center',
@@ -130,33 +120,43 @@ const styles = {
     bottom: '0',
     left: '0',
     transform: 'translateX(-20%)',
+    fontSize: '160px',
     fontWeight: '900',
     fontFamily: 'Impact, "Arial Narrow", Arial, sans-serif',
     color: '#1cd4ff',
     lineHeight: 1,
     zIndex: 1,
     userSelect: 'none',
+    opacity: 1,
   },
   image: {
     position: 'relative',
     zIndex: 2,
+    height: '190px',
     width: 'auto',
     objectFit: 'contain',
     objectPosition: 'bottom',
   },
+
+  /* Card sub-sections (Trending / Recommendations) */
   cardSection: {
     marginBottom: '20px',
+    border: '0px solid transparent',
   },
   cardSectionHeader: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: '12px',
+    border: '0px solid transparent',
   },
   cardSectionTitle: {
+    fontSize: '22px',
     fontWeight: '700',
     color: '#121212',
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
+    border: '0px solid transparent',
+    display: 'block',
   },
   viewAllBtn: {
     background: 'none',
@@ -172,6 +172,7 @@ const styles = {
   },
   cardGrid: {
     display: 'flex',
+    gap: '12px',
     flexWrap: 'nowrap',
     overflowX: 'auto',
     scrollbarWidth: 'none',
