@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import loginLogo from '../../assets/images/loginlogo.png';
-import footerBg  from '../../assets/images/footer.png';
+import loginLogo   from '../../assets/images/loginlogo.png';
+import footerBg    from '../../assets/images/footer.png';
+import facebookImg from '../../assets/images/facebook 1.png';
+import instagramImg from '../../assets/images/instagram 1.png';
+import telegramImg  from '../../assets/images/telegram 1.png';
+import twitterImg   from '../../assets/images/twitter 1.png';
 
 /* ── Mobile accordion sections ── */
 const footerSections = [
@@ -21,40 +25,12 @@ const desktopSections = [
 ];
 
 /* ── Social Icons ── */
-const InstagramIcon = () => (
-  <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-    <defs>
-      <radialGradient id="ig" cx="30%" cy="107%" r="150%">
-        <stop offset="0%"  stopColor="#fdf497"/>
-        <stop offset="5%"  stopColor="#fdf497"/>
-        <stop offset="45%" stopColor="#fd5949"/>
-        <stop offset="60%" stopColor="#d6249f"/>
-        <stop offset="90%" stopColor="#285AEB"/>
-      </radialGradient>
-    </defs>
-    <rect x="0" y="0" width="24" height="24" rx="6" fill="url(#ig)"/>
-    <circle cx="12" cy="12" r="4.5" stroke="white" strokeWidth="1.8" fill="none"/>
-    <circle cx="17.2" cy="6.8" r="1.2" fill="white"/>
-  </svg>
-);
-const FacebookIcon = () => (
-  <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-    <rect width="24" height="24" rx="6" fill="#1877F2"/>
-    <path d="M16 8h-2a1 1 0 00-1 1v2h3l-.5 3H13v7h-3v-7H8v-3h2V9a4 4 0 014-4h2v3z" fill="white"/>
-  </svg>
-);
-const XIcon = () => (
-  <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-    <rect width="24" height="24" rx="6" fill="#000000"/>
-    <path d="M17.5 4h2.5l-5.5 6.3L21 20h-5.1l-3.6-4.7L7.8 20H5.3l5.9-6.7L4 4h5.2l3.3 4.3L17.5 4zm-.9 14.4h1.4L7.5 5.5H6l10.6 12.9z" fill="white"/>
-  </svg>
-);
-const TelegramIcon = () => (
-  <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-    <rect width="24" height="24" rx="6" fill="#229ED9"/>
-    <path d="M5.5 11.5l13-5-3 13-4-4-3 2.5V13l7-6.5-8.5 5L5.5 11.5z" fill="white"/>
-  </svg>
-);
+const socialIcons = [
+  { src: facebookImg,  alt: 'Facebook'  },
+  { src: instagramImg, alt: 'Instagram' },
+  { src: twitterImg,   alt: 'Twitter'   },
+  { src: telegramImg,  alt: 'Telegram'  },
+];
 
 /* ── Chevrons ── */
 const ChevronDown = () => (
@@ -153,10 +129,11 @@ const Footer = () => {
 
           {/* Socials */}
           <div className="flex justify-center gap-3 py-4">
-            <span className="cursor-pointer"><InstagramIcon /></span>
-            <span className="cursor-pointer"><FacebookIcon /></span>
-            <span className="cursor-pointer"><XIcon /></span>
-            <span className="cursor-pointer"><TelegramIcon /></span>
+            {socialIcons.map((icon) => (
+              <span key={icon.alt} className="cursor-pointer">
+                <img src={icon.src} alt={icon.alt} className="w-9 h-9 object-contain" />
+              </span>
+            ))}
           </div>
 
           {/* Copyright */}
@@ -193,11 +170,12 @@ const Footer = () => {
               Canada. ASTERI LTD is licensed and regulated under the Gaming Act by the Curaçao Gaming Authority. Contact us at{' '}
               <a href="mailto:support@vivaxplay.com" className="text-[#1cd4ff] no-underline">support@vivaxplay.com</a>
             </p>
-            <div className="flex gap-2">
-              <span className="cursor-pointer rounded-md overflow-hidden"><InstagramIcon /></span>
-              <span className="cursor-pointer rounded-md overflow-hidden"><FacebookIcon /></span>
-              <span className="cursor-pointer rounded-md overflow-hidden"><XIcon /></span>
-              <span className="cursor-pointer rounded-md overflow-hidden"><TelegramIcon /></span>
+            <div className="flex gap-3">
+              {socialIcons.map((icon) => (
+                <span key={icon.alt} className="cursor-pointer">
+                  <img src={icon.src} alt={icon.alt} className="w-9 h-9 object-contain" />
+                </span>
+              ))}
             </div>
           </div>
 

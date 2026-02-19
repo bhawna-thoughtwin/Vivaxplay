@@ -4,17 +4,18 @@ const PromotionCard = ({ title, line1, line1Bold, line2, line2Highlight, btnLabe
       className="relative rounded-xl overflow-hidden cursor-pointer shrink-0 w-full md:w-[456px] h-[160px] md:h-[240px]"
       style={{ background: gradient || '#1a3a52' }}
     >
-      {/* Character image */}
+      {/* Character image — Figma: w401 h401 top:33 left:151 angle:-180deg */}
       {image && (
         <img
           src={image}
           alt={title}
           className="absolute object-contain pointer-events-none z-0"
           style={{
-            top: '-10px',
-            left: '42%',
-            width: '230px',
-            height: '230px',
+            top: '33px',
+            left: '151px',
+            width: '401px',
+            height: '401px',
+            transform: 'scaleX(-1)',
           }}
         />
       )}
