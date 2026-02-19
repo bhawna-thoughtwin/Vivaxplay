@@ -13,33 +13,37 @@ const RegisterPage = () => {
   const [remember, setRemember] = useState(false);
 
   return (
-    <div style={styles.root}>
+    <div className="flex min-h-screen bg-[#f0f0f0] overflow-hidden">
 
-      {/* ── Left panel — centered card ── */}
-      <div style={styles.leftPanel}>
+      {/* ── Left panel — centers the card ── */}
+      <div className="flex-1 min-h-screen bg-[#f0f0f0] flex items-center justify-center px-4 py-8 box-border">
 
-        {/* ── Outer card: w541 h656 border-radius:16 border:1 padding:32 ── */}
-        <div style={styles.card}>
+        {/* ── Outer card ── */}
+        <div className="w-full max-w-[541px] rounded-[16px] border border-[#e0e0e0] p-6 md:p-8 bg-white box-border flex items-center justify-center">
 
-          {/* ── Inner content: w477 h592 gap:64 ── */}
-          <div style={styles.innerContent}>
+          {/* ── Inner content ── */}
+          <div className="w-full flex flex-col items-center gap-8 md:gap-[64px] box-border">
 
             {/* Logo */}
-            <img src={loginLogo} alt="VIVA X PLAY" style={styles.logo} />
+            <img src={loginLogo} alt="VIVA X PLAY" className="w-[130px] md:w-[160px] h-auto object-contain flex-shrink-0" />
 
-            {/* ── Tab + Heading + Form block: w477 h487 gap:72 ── */}
-            <div style={styles.formBlock}>
+            {/* ── Tab + Heading + Form block ── */}
+            <div className="w-full flex flex-col gap-6 md:gap-[72px] box-border">
 
-              {/* Tab toggle: w477 h41 border-radius:4 border:1 */}
-              <div style={styles.tabBar}>
+              {/* Tab toggle */}
+              <div
+                className="flex w-full h-[41px] rounded-[4px] overflow-hidden gap-1 p-1 items-center flex-shrink-0 box-border"
+                style={{ border: '1px solid #1CD4FF80' }}
+              >
                 <button
-                  style={styles.tabActive}
+                  className="flex-1 h-full px-[10px] py-1 rounded-[2px] cursor-pointer text-[14px] font-bold text-[#1a1a1a] border-none box-border"
+                  style={{ background: 'linear-gradient(180deg, #E3FC7B 0%, #C2D95A 100%)' }}
                   onClick={() => navigate('/register')}
                 >
                   Register
                 </button>
                 <button
-                  style={styles.tabInactive}
+                  className="flex-1 h-full px-[10px] py-1 rounded-[2px] cursor-pointer text-[14px] font-medium text-[#555555] bg-transparent border-none box-border"
                   onClick={() => navigate('/login')}
                 >
                   Login
@@ -47,43 +51,48 @@ const RegisterPage = () => {
               </div>
 
               {/* Heading + Form + Socials */}
-              <div style={styles.headingFormBlock}>
+              <div className="w-full flex flex-col items-center gap-6 md:gap-[32px]">
 
                 {/* Heading */}
-                <h1 style={styles.heading}>CREATE YOUR ACCOUNT</h1>
+                <h1 className="text-[22px] md:text-[32px] font-bold text-[#111111] m-0 w-full text-center uppercase leading-tight">
+                  CREATE YOUR ACCOUNT
+                </h1>
 
                 {/* Form */}
-                <form style={styles.form} onSubmit={e => e.preventDefault()}>
+                <form className="w-full flex flex-col gap-[16px]" onSubmit={e => e.preventDefault()}>
 
-                  <div style={styles.fieldGroup}>
-                    <label style={styles.label}>Username</label>
+                  {/* Username field */}
+                  <div className="flex flex-col gap-[6px]">
+                    <label className="text-[13px] font-medium text-[#555555]">Username</label>
                     <input
                       type="text"
                       placeholder="Username"
-                      style={styles.input}
+                      className="w-full px-[14px] py-3 rounded-[8px] border border-[#e0e0e0] text-[14px] text-[#111111] outline-none box-border bg-[#fafafa]"
                     />
                   </div>
 
-                  <div style={styles.fieldGroup}>
-                    <label style={styles.label}>Email</label>
+                  {/* Email field */}
+                  <div className="flex flex-col gap-[6px]">
+                    <label className="text-[13px] font-medium text-[#555555]">Email</label>
                     <input
                       type="email"
                       placeholder="Email"
-                      style={styles.input}
+                      className="w-full px-[14px] py-3 rounded-[8px] border border-[#e0e0e0] text-[14px] text-[#111111] outline-none box-border bg-[#fafafa]"
                     />
                   </div>
 
-                  <div style={styles.fieldGroup}>
-                    <label style={styles.label}>Password</label>
-                    <div style={styles.inputWrapper}>
+                  {/* Password field */}
+                  <div className="flex flex-col gap-[6px]">
+                    <label className="text-[13px] font-medium text-[#555555]">Password</label>
+                    <div className="relative flex items-center">
                       <input
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
-                        style={styles.inputWithIcon}
+                        className="w-full pl-[14px] pr-[40px] py-3 rounded-[8px] border border-[#e0e0e0] text-[14px] text-[#111111] outline-none box-border bg-[#fafafa]"
                       />
                       <button
                         type="button"
-                        style={styles.eyeBtn}
+                        className="absolute right-[14px] bg-transparent border-none cursor-pointer p-0 flex items-center justify-center leading-none"
                         onClick={() => setShowPassword(p => !p)}
                       >
                         {showPassword ? (
@@ -103,391 +112,71 @@ const RegisterPage = () => {
                   </div>
 
                   {/* Remember + Forgot */}
-                  <div style={styles.rememberRow}>
-                    <label style={styles.checkLabel}>
+                  <div className="flex items-center justify-between">
+                    <label className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={remember}
                         onChange={e => setRemember(e.target.checked)}
-                        style={styles.checkbox}
+                        className="w-4 h-4 cursor-pointer accent-[#1cd4ff]"
                       />
-                      <span style={styles.checkText}>Remember me</span>
+                      <span className="text-[13px] text-[#333333]">Remember me</span>
                     </label>
-                    <button type="button" style={styles.forgotBtn}>Forgot Password?</button>
+                    <button
+                      type="button"
+                      className="bg-transparent border-none cursor-pointer text-[13px] md:text-[14px] font-[590] text-[#333333] underline p-0 leading-[25px]"
+                    >
+                      Forgot Password?
+                    </button>
                   </div>
 
-                  {/* Register button */}
-                  <button type="submit" style={styles.submitBtn}>CREATE ACCOUNT</button>
+                  {/* Create Account button */}
+                  <button
+                    type="submit"
+                    className="w-full h-[44px] bg-[#1CD4FF] border border-[#1CD4FF] rounded-[4px] text-[#333333] text-[14px] font-[590] uppercase cursor-pointer flex items-center justify-center px-[10px] py-1 box-border"
+                  >
+                    CREATE ACCOUNT
+                  </button>
 
                   {/* Divider */}
-                  <div style={styles.dividerRow}>
-                    <div style={styles.dividerLine} />
-                    <span style={styles.dividerText}>Or continue with</span>
-                    <div style={styles.dividerLine} />
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-px bg-[#e0e0e0]" />
+                    <span className="text-[12px] text-[#999999] whitespace-nowrap">Or continue with</span>
+                    <div className="flex-1 h-px bg-[#e0e0e0]" />
                   </div>
 
                   {/* Social login icons */}
-                  <div style={styles.socialRow}>
-                    <button type="button" style={styles.socialBtn}>
-                      <img src={bottom1} alt="social" style={styles.socialIcon} />
-                    </button>
-                    <button type="button" style={styles.socialBtn}>
-                      <img src={bottom2} alt="social" style={styles.socialIcon} />
-                    </button>
-                    <button type="button" style={styles.socialBtn}>
-                      <img src={bottom3} alt="social" style={styles.socialIcon} />
-                    </button>
-                    <button type="button" style={styles.socialBtn}>
-                      <img src={bottom4} alt="social" style={styles.socialIcon} />
-                    </button>
+                  <div className="flex justify-center items-center gap-[12px] md:gap-[16px] w-full">
+                    {[bottom1, bottom2, bottom3, bottom4].map((src, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className="flex-1 md:flex-none md:w-[70px] h-[44px] bg-transparent border border-[#e0e0e0] rounded-[8px] cursor-pointer flex items-center justify-center box-border"
+                      >
+                        <img src={src} alt="social" className="w-6 h-6 object-contain" />
+                      </button>
+                    ))}
                   </div>
 
                 </form>
-              </div>{/* end headingFormBlock */}
+              </div>
 
-            </div>{/* end formBlock */}
-          </div>{/* end innerContent */}
-        </div>{/* end card */}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* ── Right panel — image ── */}
-      <div style={styles.rightPanel}>
-        <img src={loginPageImg} alt="Register Visual" style={styles.rightImage} />
+      {/* ── Right panel — image (hidden on mobile) ── */}
+      <div className="hidden md:block w-[796px] relative overflow-hidden min-h-screen flex-shrink-0">
+        <img
+          src={loginPageImg}
+          alt="Register Visual"
+          className="absolute top-[-110px] left-0 w-[796px] h-[1300px] object-cover object-center"
+        />
       </div>
 
     </div>
   );
-};
-
-const styles = {
-  root: {
-    display: 'flex',
-    minHeight: '100vh',
-    backgroundColor: '#f0f0f0',
-    overflow: 'hidden',
-  },
-
-  /* ── Left panel — fills remaining space, centers the card ── */
-  leftPanel: {
-    flex: 1,
-    minHeight: '100vh',
-    backgroundColor: '#f0f0f0',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '40px 20px',
-    boxSizing: 'border-box',
-  },
-
-  /* ── Outer card: w541 h656 gap:10 border-radius:16 border:1 padding:32 ── */
-  card: {
-    width: '541px',
-    minHeight: '656px',
-    borderRadius: '16px',
-    border: '1px solid #e0e0e0',
-    padding: '32px',
-    backgroundColor: '#ffffff',
-    boxSizing: 'border-box',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '10px',
-  },
-
-  /* ── Inner content: w477 h592 gap:64 (logo + formBlock stacked) ── */
-  innerContent: {
-    width: '477px',
-    minHeight: '592px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '64px',
-    boxSizing: 'border-box',
-  },
-
-  logo: {
-    width: '160px',
-    height: 'auto',
-    objectFit: 'contain',
-    flexShrink: 0,
-  },
-
-  /* ── Tab + heading + form: w477 h487 gap:72 ── */
-  formBlock: {
-    width: '477px',
-    minHeight: '487px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '72px',
-    boxSizing: 'border-box',
-  },
-
-  /* Tab toggle: w477 h41 border-radius:4 border:1 */
-  tabBar: {
-    display: 'flex',
-    width: '477px',
-    height: '41px',
-    border: '1px solid #1CD4FF80',
-    borderRadius: '4px',
-    overflow: 'hidden',
-    gap: '4px',
-    padding: '4px',
-    boxSizing: 'border-box',
-    alignItems: 'center',
-    flexShrink: 0,
-  },
-  tabActive: {
-    flex: 1,
-    height: '100%',
-    padding: '4px 10px',
-    background: 'linear-gradient(180deg, #E3FC7B 0%, #C2D95A 100%)',
-    border: 'none',
-    borderRadius: '2px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '700',
-    color: '#1a1a1a',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-    boxSizing: 'border-box',
-  },
-  tabInactive: {
-    flex: 1,
-    height: '100%',
-    padding: '4px 10px',
-    background: 'transparent',
-    border: 'none',
-    borderRadius: '2px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '500',
-    color: '#555555',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-    boxSizing: 'border-box',
-  },
-
-  /* Heading + form stacked */
-  headingFormBlock: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '32px',
-  },
-
-  heading: {
-    fontSize: '32px',
-    fontWeight: '700',
-    fontStyle: 'normal',
-    color: '#111111',
-    margin: '0 auto',
-    width: '100%',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-    lineHeight: '20px',
-    letterSpacing: '0',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-  },
-
-  form: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
-
-  fieldGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '6px',
-  },
-
-  label: {
-    fontSize: '13px',
-    fontWeight: '500',
-    color: '#555555',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-  },
-
-  input: {
-    width: '100%',
-    padding: '12px 14px',
-    borderRadius: '8px',
-    border: '1px solid #e0e0e0',
-    fontSize: '14px',
-    color: '#111111',
-    outline: 'none',
-    boxSizing: 'border-box',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-    backgroundColor: '#fafafa',
-  },
-
-  inputWrapper: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-  },
-
-  inputWithIcon: {
-    width: '100%',
-    padding: '12px 40px 12px 14px',
-    borderRadius: '8px',
-    border: '1px solid #e0e0e0',
-    fontSize: '14px',
-    color: '#111111',
-    outline: 'none',
-    boxSizing: 'border-box',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-    backgroundColor: '#fafafa',
-  },
-
-  eyeBtn: {
-    position: 'absolute',
-    right: '14px',
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    lineHeight: 0,
-  },
-
-  rememberRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  checkLabel: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    cursor: 'pointer',
-  },
-
-  checkbox: {
-    accentColor: '#1cd4ff',
-    width: '16px',
-    height: '16px',
-    cursor: 'pointer',
-  },
-
-  checkText: {
-    fontSize: '13px',
-    color: '#333333',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-  },
-
-  forgotBtn: {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '590',
-    fontStyle: 'normal',
-    color: '#333333',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-    lineHeight: '25px',
-    letterSpacing: '0',
-    verticalAlign: 'middle',
-    textDecoration: 'underline',
-    textDecorationStyle: 'solid',
-    padding: 0,
-  },
-
-  submitBtn: {
-    width: '477px',
-    height: '44px',
-    background: '#1CD4FF',
-    border: '1px solid #1CD4FF',
-    borderRadius: '4px',
-    color: '#333333',
-    fontSize: '14px',
-    fontWeight: '590',
-    fontStyle: 'normal',
-    cursor: 'pointer',
-    letterSpacing: '0',
-    lineHeight: '20px',
-    textTransform: 'uppercase',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-    paddingTop: '4px',
-    paddingBottom: '4px',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    gap: '4px',
-    boxSizing: 'border-box',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  dividerRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-  },
-
-  dividerLine: {
-    flex: 1,
-    height: '1px',
-    backgroundColor: '#e0e0e0',
-  },
-
-  dividerText: {
-    fontSize: '12px',
-    color: '#999999',
-    whiteSpace: 'nowrap',
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-  },
-
-  socialRow: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '16px',
-    width: '328px',
-    margin: '0 auto',
-  },
-
-  socialBtn: {
-    width: '70px',
-    height: '44px',
-    background: 'none',
-    border: '1px solid #e0e0e0',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxSizing: 'border-box',
-    flexShrink: 0,
-  },
-
-  socialIcon: {
-    width: '24px',
-    height: '24px',
-    objectFit: 'contain',
-  },
-
-  /* ── Right panel — image ── */
-  rightPanel: {
-    width: '796px',
-    position: 'relative',
-    overflow: 'hidden',
-    minHeight: '100vh',
-    flexShrink: 0,
-  },
-
-  rightImage: {
-    position: 'absolute',
-    top: '-110px',
-    left: '0',
-    width: '796px',
-    height: '1300px',
-    objectFit: 'cover',
-    objectPosition: 'center',
-  },
 };
 
 export default RegisterPage;

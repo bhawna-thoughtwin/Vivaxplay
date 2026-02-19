@@ -1,6 +1,6 @@
 import SectionHeader from '../common/SectionHeader';
 import MatchCard from '../cards/MatchCard';
-import sportsIcon from '../../assets/icons/volleyball-player 3.png';
+import { volleyballPlayer3 as sportsIcon } from '../../assets/icons';
 import sport1 from '../../assets/images/sport1.png';
 import sport2 from '../../assets/images/sport2.png';
 import sport3 from '../../assets/images/sport3.png';
@@ -29,14 +29,19 @@ const recommendationMatches = [
   { league: 'Soccer | La Liga 2026', team1: 'FC Barcelona', team2: 'Real Madrid', score1: 1, score2: 0, odds: ['1.85', '2.05', '+54'] },
 ];
 
-/* Reusable card row with section sub-header */
+/* Reusable card row */
 const CardRow = ({ title, matches }) => (
-  <div style={styles.cardSection}>
-    <div style={styles.cardSectionHeader}>
-      <span style={styles.cardSectionTitle}>{title}</span>
-      <button style={styles.viewAllBtn}>VIEW ALL &rsaquo;</button>
+  <div style={{ marginTop: '24px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+      <span style={{ fontSize: '24px', fontWeight: '700', color: '#121212' }}>{title}</span>
+      <button style={{ background: 'transparent', border: '1px solid #e0e0e0', color: '#1cd4ff', padding: '5px 14px', borderRadius: '6px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', outline: 'none' }}>
+        VIEW ALL &rsaquo;
+      </button>
     </div>
-    <div style={styles.cardGrid}>
+    <div
+      className="flex gap-3 overflow-x-auto"
+      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', paddingLeft: '4px', paddingBottom: '4px' }}
+    >
       {matches.map((match, i) => (
         <MatchCard key={i} {...match} isLive={false} />
       ))}
@@ -46,138 +51,44 @@ const CardRow = ({ title, matches }) => (
 
 const SportsBetting = () => {
   return (
-    <section style={styles.section}>
-      {/* Header */}
+    <section className="bg-white rounded-xl w-full box-border" style={{ padding: '20px 24px' }}>
+
       <SectionHeader
-        icon={<img src={sportsIcon} alt="Sports Betting" style={styles.iconImg} />}
+        icon={<img src={sportsIcon} alt="Sports Betting" className="w-full h-full object-contain" />}
         title="Sports Betting"
         subtitle="Bet on 30+ sports with the best odds"
         onViewAll={() => {}}
       />
 
       {/* Sports image strip */}
-      <div style={styles.sportsStrip}>
+      <div className="flex mb-0 overflow-hidden">
         {sports.map((sport) => (
-          <div key={sport.label} style={styles.sportItem}>
-            {/* Big number sits behind the image */}
-            <div style={styles.imgWrapper}>
-              <span style={styles.number}>{sport.number}</span>
-              <img src={sport.image} alt={sport.label} style={styles.image} />
+          <div key={sport.label} className="flex-1 flex justify-center">
+            <div className="relative w-[120px] md:w-[180px] h-[140px] md:h-[200px] flex items-end justify-center">
+              <span
+                className="absolute bottom-0 left-0 font-black text-[#1cd4ff] leading-none z-10 select-none -translate-x-1/5"
+                style={{
+                  fontSize: 'clamp(80px, 10vw, 160px)',
+                  fontFamily: 'Impact, "Arial Narrow", Arial, sans-serif',
+                }}
+              >
+                {sport.number}
+              </span>
+              <img
+                src={sport.image}
+                alt={sport.label}
+                className="relative z-20 h-[130px] md:h-[190px] w-auto object-contain object-bottom"
+              />
             </div>
           </div>
         ))}
       </div>
 
-      {/* Trending */}
       <CardRow title="Trending" matches={trendingMatches} />
-
-      {/* Recommendations */}
       <CardRow title="Recommendations" matches={recommendationMatches} />
+
     </section>
   );
-};
-
-const styles = {
-  section: {
-    backgroundColor: '#ffffff',
-    borderRadius: '12px',
-    padding: '20px',
-    marginBottom: '16px',
-    width: '1189px',
-    maxWidth: '100%',
-    boxSizing: 'border-box',
-    border: 'none',
-    outline: 'none',
-  },
-
-  iconImg: {
-    width: '60px',
-    height: '60px',
-  },
-
-  /* Sports strip */
-  sportsStrip: {
-    display: 'flex',
-    gap: '0px',
-    marginBottom: '24px',
-    overflow: 'hidden',
-  },
-  sportItem: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  imgWrapper: {
-    position: 'relative',
-    width: '180px',
-    height: '200px',
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  number: {
-    position: 'absolute',
-    bottom: '0',
-    left: '0',
-    transform: 'translateX(-20%)',
-    fontSize: '160px',
-    fontWeight: '900',
-    fontFamily: 'Impact, "Arial Narrow", Arial, sans-serif',
-    color: '#1cd4ff',
-    lineHeight: 1,
-    zIndex: 1,
-    userSelect: 'none',
-    opacity: 1,
-  },
-  image: {
-    position: 'relative',
-    zIndex: 2,
-    height: '190px',
-    width: 'auto',
-    objectFit: 'contain',
-    objectPosition: 'bottom',
-  },
-
-  /* Card sub-sections (Trending / Recommendations) */
-  cardSection: {
-    marginBottom: '20px',
-    border: '0px solid transparent',
-  },
-  cardSectionHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '12px',
-    border: '0px solid transparent',
-  },
-  cardSectionTitle: {
-    fontSize: '22px',
-    fontWeight: '700',
-    color: '#121212',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    border: '0px solid transparent',
-    display: 'block',
-  },
-  viewAllBtn: {
-    background: 'none',
-    border: '1px solid #e0e0e0',
-    color: '#1cd4ff',
-    padding: '5px 14px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '13px',
-    fontWeight: '590',
-    fontFamily: 'inherit',
-    outline: 'none',
-  },
-  cardGrid: {
-    display: 'flex',
-    gap: '12px',
-    flexWrap: 'nowrap',
-    overflowX: 'auto',
-    scrollbarWidth: 'none',
-    msOverflowStyle: 'none',
-  },
 };
 
 export default SportsBetting;

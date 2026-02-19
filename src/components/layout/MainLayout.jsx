@@ -7,48 +7,32 @@ const MainLayout = ({ children }) => {
   const { sidebarOpen } = useApp();
 
   return (
-    <div style={styles.root}>
-      
+    <div className="min-h-screen bg-[#ececec]">
       <Navbar />
-      <div style={styles.body}>
-        {sidebarOpen && <Sidebar />}
-        <div style={styles.mainWrapper}>
-          <main
-            style={{
-              ...styles.main,
-              marginLeft: sidebarOpen ? '300px' : '0px',
-            }}
-          >
-            {children}
-          </main>
-          <Footer sidebarOpen={sidebarOpen} />
-        </div>
+      <Sidebar />
+
+      {/*
+        Figma: left 332px (sidebar 300 + gap 32), top 117px (navbar 62 + padding 55)
+        Mobile: no left margin, sidebar overlays
+      */}
+      <div
+        style={{
+          marginLeft: sidebarOpen ? '332px' : '20px',
+          marginTop: '62px',
+          paddingTop: '55px',
+          paddingRight: '20px',
+          paddingBottom: '32px',
+          minHeight: 'calc(100vh - 62px)',
+          backgroundColor: '#ececec',
+          transition: 'margin-left 0.3s ease',
+        }}
+      >
+        {children}
+        <Footer />
       </div>
+
     </div>
   );
-};
-
-const styles = {
-  root: {
-    minHeight: '100vh',
-    backgroundColor: '#ececec',
-  },
-  body: {
-    display: 'flex',
-    paddingTop: '62px',
-  },
-  main: {
-    flex: 1,
-    padding: '20px 20px 0',
-    transition: 'margin-left 0.3s ease',
-    minHeight: 'calc(100vh - 62px)',
-    backgroundColor: '#ececec',
-  },
-  mainWrapper: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
 };
 
 export default MainLayout;

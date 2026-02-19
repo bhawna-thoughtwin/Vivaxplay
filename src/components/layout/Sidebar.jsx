@@ -3,17 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import SearchBar from '../common/SearchBar';
 
-import sportsIcon      from '../../assets/icons/sportsicon.png';
-import liveSportsIcon  from '../../assets/icons/Live sports.png';
-import casinoIcon      from '../../assets/icons/icon-casino2.svg';
-import liveDealerIcon  from '../../assets/icons/icon-live-dealer2.svg';
-import promotionsIcon  from '../../assets/icons/icon-promotions2.svg';
-import referIcon       from '../../assets/icons/icon-refer.svg';
-import bonusIcon       from '../../assets/icons/icon-bonus.svg';
-import supportIcon     from '../../assets/icons/icon-support.svg';
-import aboutIcon       from '../../assets/icons/icon-about.svg';
+import sportsIcon     from '../../assets/icons/sportsicon.png';
+import liveSportsIcon from '../../assets/icons/Livesports.png';
+import casinoIcon     from '../../assets/icons/icon-casino2.svg';
+import liveDealerIcon from '../../assets/icons/icon-live-dealer2.svg';
+import promotionsIcon from '../../assets/icons/icon-promotions2.svg';
+import referIcon      from '../../assets/icons/icon-refer.svg';
+import bonusIcon      from '../../assets/icons/icon-bonus.svg';
+import supportIcon    from '../../assets/icons/icon-support.svg';
+import aboutIcon      from '../../assets/icons/icon-about.svg';
 
-/* ── About sub-links (clickable — navigate to page) ── */
 const aboutLinks = [
   { label: 'AML Policy',            path: '/about/aml-policy' },
   { label: 'Cookie Policy',         path: '/about/cookie-policy' },
@@ -25,256 +24,165 @@ const aboutLinks = [
   { label: 'Terms & Conditions',    path: '/about/terms-and-conditions' },
 ];
 
-/* ── All main nav items — static display only, except items with path or expandable ── */
-const menuItems = [
-  { label: 'Sports',          icon: sportsIcon },
-  { label: 'Live Sports',     icon: liveSportsIcon },
-  { label: 'Casino',          icon: casinoIcon,     path: '/casino' },
-  { label: 'Live Dealer',     icon: liveDealerIcon },
-  { label: 'Promotions',      icon: promotionsIcon },
-  { label: 'Refer a friend',  icon: referIcon },
-  { label: 'Welcome Bonuses', icon: bonusIcon },
-  { label: 'Support',         icon: supportIcon },
-  { label: 'About Us',        icon: aboutIcon, expandable: true, children: aboutLinks },
+/* Groups with dividers between them — matches Figma layout */
+const menuGroups = [
+  [
+    { label: 'Sports',      icon: sportsIcon },
+    { label: 'Live Sports', icon: liveSportsIcon, isLive: true },
+  ],
+  [
+    { label: 'Casino',      icon: casinoIcon,     path: '/casino' },
+    { label: 'Live Dealer', icon: liveDealerIcon },
+  ],
+  [
+    { label: 'Promotions',      icon: promotionsIcon },
+    { label: 'Refer a friend',  icon: referIcon },
+    { label: 'Welcome Bonuses', icon: bonusIcon },
+  ],
+  [
+    { label: 'Support',  icon: supportIcon },
+    { label: 'About Us', icon: aboutIcon, expandable: true, children: aboutLinks },
+  ],
 ];
 
-/* ── Chevron SVGs ── */
 const ChevronDown = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6 9l6 6 6-6" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+    <path d="M6 9l6 6 6-6" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 const ChevronUp = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 15l-6-6-6 6" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+    <path d="M18 15l-6-6-6 6" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
-/* ── LIVE badge ── */
 const LiveBadge = () => (
-  <span style={styles.liveBadge}>
-    <span style={styles.liveDot} />
+  <span className="inline-flex items-center gap-1 bg-[#ff3b30] text-white text-[10px] font-bold px-1.5 py-0.5 rounded tracking-wide shrink-0">
+    <span className="w-[5px] h-[5px] rounded-full bg-white shrink-0" />
     LIVE
   </span>
 );
 
-/* ══════════════════════════════════════════════════════════ */
 const Sidebar = () => {
-  const { sidebarOpen } = useApp();
+  const { sidebarOpen, toggleSidebar } = useApp();
   const [expanded, setExpanded] = useState({});
   const [activeSubItem, setActiveSubItem] = useState(null);
   const navigate = useNavigate();
 
-  if (!sidebarOpen) return null;
+  const handleNavigate = (path) => {
+    navigate(path);
+    if (window.innerWidth < 768) toggleSidebar();
+  };
 
   return (
-    <aside style={styles.sidebar}>
+    <>
+      {/* ── Backdrop: mobile only ── */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-[1099] md:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
 
-      {/* ── Search bar (static) ── */}
-      <div style={styles.searchWrapper}>
-        <SearchBar />
-      </div>
+      {/* ── Sidebar panel ── */}
+      <aside
+        className={`
+          fixed left-0 top-[62px]
+          w-[300px]
+          h-[calc(100vh-62px)]
+          bg-white rounded-br-[12px]
+          overflow-y-auto overflow-x-hidden
+          flex flex-col
+          transition-transform duration-300 ease-in-out
+          z-[1100] md:z-[900]
+          shadow-[4px_0_20px_rgba(0,0,0,0.10)]
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+      >
 
-      {/* ── Navigation menu ── */}
-      <nav style={styles.menu}>
-        {menuItems.map((item) => (
-          <div key={item.label}>
+        {/* ── Inner content container: width 276, left 12px, gap 16px ── */}
+        <div className="flex flex-col gap-[16px] px-[12px] pt-[13px] pb-6 w-full">
 
-            {/* About Us — clickable to expand/collapse */}
-            {item.expandable ? (
-              <button
-                style={styles.menuItem}
-                onClick={() =>
-                  setExpanded(prev => ({ ...prev, [item.label]: !prev[item.label] }))
-                }
-              >
-                <img src={item.icon} alt={item.label} style={styles.menuIcon} />
-                <span style={styles.menuLabel}>{item.label}</span>
-                <span style={styles.chevron}>
-                  {expanded[item.label] ? <ChevronUp /> : <ChevronDown />}
-                </span>
-              </button>
-            ) : item.path ? (
-              /* Items with a path — clickable button that navigates */
-              <button
-                style={styles.menuItem}
-                onClick={() => navigate(item.path)}
-              >
-                <img src={item.icon} alt={item.label} style={styles.menuIcon} />
-                <span style={styles.menuLabel}>{item.label}</span>
-              </button>
-            ) : (
-              /* All other items — static, non-clickable display */
-              <div style={styles.menuItemStatic}>
-                <img src={item.icon} alt={item.label} style={styles.menuIcon} />
-                <span style={styles.menuLabel}>{item.label}</span>
-                {item.isLive && <LiveBadge />}
-              </div>
-            )}
+          {/* Search bar */}
+          <SearchBar />
 
-            {/* About Us sub-links */}
-            {item.children && expanded[item.label] && (
-              <div style={styles.submenu}>
-                {item.children.map((child) => (
-                  <button
-                    key={child.label}
-                    style={{
-                      ...styles.submenuItem,
-                      ...(activeSubItem === child.label ? styles.submenuItemActive : {}),
-                    }}
-                    onClick={() => {
-                      setActiveSubItem(child.label);
-                      navigate(child.path);
-                    }}
-                  >
-                    {child.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </nav>
-    </aside>
+          {/* Menu groups with dividers */}
+          {menuGroups.map((group, groupIndex) => (
+            <div key={groupIndex} className="flex flex-col">
+
+              {/* Divider above each group except first */}
+              {groupIndex > 0 && (
+                <div className="h-px bg-[#f0f0f0] mb-[16px]" />
+              )}
+
+              {group.map((item) => (
+                <div key={item.label}>
+
+                  {/* ── Expandable (About Us) ── */}
+                  {item.expandable ? (
+                    <button
+                      className="flex items-center gap-3 w-full bg-transparent border-none outline-none cursor-pointer px-2 py-[11px] text-[15px] font-medium text-[#0d0c22] text-left rounded-lg hover:bg-[#f7f7f7] transition-colors"
+                      onClick={() => setExpanded(prev => ({ ...prev, [item.label]: !prev[item.label] }))}
+                    >
+                      <img src={item.icon} alt={item.label} className="w-[20px] h-[20px] object-contain shrink-0" />
+                      <span className="flex-1 text-[#0d0c22] text-[15px]">{item.label}</span>
+                      <span className="flex items-center shrink-0 mr-1">
+                        {expanded[item.label] ? <ChevronUp /> : <ChevronDown />}
+                      </span>
+                    </button>
+
+                  /* ── Navigable item ── */
+                  ) : item.path ? (
+                    <button
+                      className="flex items-center gap-3 w-full bg-transparent border-none outline-none cursor-pointer px-2 py-[11px] text-[15px] font-medium text-[#0d0c22] text-left rounded-lg hover:bg-[#f7f7f7] transition-colors"
+                      onClick={() => handleNavigate(item.path)}
+                    >
+                      <img src={item.icon} alt={item.label} className="w-[20px] h-[20px] object-contain shrink-0" />
+                      <span className="flex-1 text-[#0d0c22] text-[15px]">{item.label}</span>
+                      <span className="flex items-center shrink-0 mr-1"><ChevronDown /></span>
+                    </button>
+
+                  /* ── Static item ── */
+                  ) : (
+                    <div className="flex items-center gap-3 w-full px-2 py-[11px] text-[15px] font-medium text-[#0d0c22] rounded-lg">
+                      <img src={item.icon} alt={item.label} className="w-[20px] h-[20px] object-contain shrink-0" />
+                      <span className="flex-1 text-[#0d0c22] text-[15px]">{item.label}</span>
+                     <span className="flex items-center shrink-0 mr-1"><ChevronDown /></span>
+
+                    </div>
+                  )}
+
+                  {/* ── About Us sub-links ── */}
+                  {item.children && expanded[item.label] && (
+                    <div className="flex flex-col pl-[44px] pb-1 pt-1">
+                      {item.children.map((child) => (
+                        <button
+                          key={child.label}
+                          className={`border-none outline-none cursor-pointer text-[13px] text-left py-[7px] px-[10px] rounded-md leading-snug transition-all ${
+                            activeSubItem === child.label
+                              ? 'bg-[#1cd4ff] text-white font-semibold'
+                              : 'bg-transparent text-[#666] font-normal hover:text-[#0d0c22]'
+                          }`}
+                          onClick={() => {
+                            setActiveSubItem(child.label);
+                            handleNavigate(child.path);
+                          }}
+                        >
+                          {child.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                </div>
+              ))}
+            </div>
+          ))}
+
+        </div>
+      </aside>
+    </>
   );
-};
-
-/* ══════════════════════════════════════════════════════════ */
-const styles = {
-
-  /* ── Outer aside ── */
-  sidebar: {
-    width: '300px',
-    minWidth: '300px',
-    height: 'calc(100vh - 80px)',
-    backgroundColor: '#ffffff',
-    borderBottomRightRadius: '12px',
-    position: 'fixed',
-    top: '80px',
-    left: 0,
-    zIndex: 900,
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    display: 'flex',
-    flexDirection: 'column',
-    boxSizing: 'border-box',
-  },
-
-  /* ── Search wrapper — no border ── */
-  searchWrapper: {
-    padding: '16px 16px 12px',
-    border: '0px solid transparent',
-  },
-
-  /* ── Nav menu ── */
-  menu: {
-    flex: 1,
-    padding: '8px 0',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-
-  /* Static nav row (div, not button — no pointer, no interaction) */
-  menuItemStatic: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    width: '100%',
-    padding: '13px 20px 13px 16px',
-    fontSize: '15px',
-    fontWeight: '510',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    color: '#0d0c22',
-    boxSizing: 'border-box',
-    border: '0px solid transparent',
-  },
-
-  /* About Us button row */
-  menuItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    width: '100%',
-    background: 'none',
-    border: '0px solid transparent',
-    outline: 'none',
-    cursor: 'pointer',
-    padding: '13px 20px 13px 16px',
-    fontSize: '15px',
-    fontWeight: '510',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    textAlign: 'left',
-    color: '#0d0c22',
-    boxSizing: 'border-box',
-  },
-
-  menuIcon: {
-    width: '20px',
-    height: '20px',
-    objectFit: 'contain',
-    flexShrink: 0,
-  },
-
-  menuLabel: {
-    flex: 1,
-    color: '#0d0c22',
-  },
-
-  /* LIVE badge */
-  liveBadge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '4px',
-    backgroundColor: '#ff3b30',
-    color: '#ffffff',
-    fontSize: '10px',
-    fontWeight: '700',
-    padding: '2px 6px',
-    borderRadius: '4px',
-    letterSpacing: '0.5px',
-    flexShrink: 0,
-  },
-  liveDot: {
-    width: '5px',
-    height: '5px',
-    borderRadius: '50%',
-    backgroundColor: '#ffffff',
-    flexShrink: 0,
-  },
-
-  chevron: {
-    display: 'flex',
-    alignItems: 'center',
-    flexShrink: 0,
-  },
-
-  /* ── About Us sub-menu ── */
-  submenu: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingLeft: '52px',
-    paddingBottom: '6px',
-  },
-  submenuItem: {
-    background: 'none',
-    border: '0px solid transparent',
-    outline: 'none',
-    color: '#666666',
-    cursor: 'pointer',
-    fontSize: '13px',
-    fontWeight: '400',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
-    textAlign: 'left',
-    padding: '7px 0',
-    lineHeight: 1.4,
-  },
-  submenuItemActive: {
-    backgroundColor: '#1cd4ff',
-    color: '#ffffff',
-    fontWeight: '600',
-    borderRadius: '6px',
-    padding: '7px 10px',
-  },
 };
 
 export default Sidebar;

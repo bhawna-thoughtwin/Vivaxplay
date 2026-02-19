@@ -1,115 +1,46 @@
 import freeSpinImg from '../../assets/images/freespin.png';
 
 const FreeSpinBonus = () => (
-  <section style={styles.wrapper}>
+  <section className="w-full max-w-full mb-3 md:mb-4 box-border relative">
 
     {/* Card */}
-    <div style={styles.card}>
+    <div
+      className="relative w-full h-[160px] md:h-[240px] rounded-xl overflow-hidden flex items-center box-border"
+      style={{ background: 'linear-gradient(90deg, #92FE9D 0%, #00C9FF 100%)' }}
+    >
 
-      {/* LEFT — freespin image overflows above the card */}
-      <img src={freeSpinImg} alt="Free spin" style={styles.image} />
+      {/* LEFT — freespin image — Figma: w594 h446 top:-20 left:-65 angle:0 */}
+      <img
+        src={freeSpinImg}
+        alt="Free spin"
+        className="absolute object-contain pointer-events-none z-[1]"
+        style={{
+          top: '-20px',
+          left: '-65px',
+          width: '594px',
+          height: '446px',
+        }}
+      />
 
       {/* RIGHT — text block */}
-      <div style={styles.textBlock}>
-        <h2 style={styles.title}>Free Spin Bonus</h2>
-        <p style={styles.subtitle}>
+      <div className="absolute right-4 md:right-10 flex flex-col gap-2 md:gap-8 z-[1] text-right items-end max-w-[55%] md:max-w-none">
+        <h2
+          className="m-0 p-0 font-medium text-[#131313] leading-none whitespace-nowrap"
+          style={{ fontSize: 'clamp(22px, 4vw, 72px)' }}
+        >
+          Free Spin Bonus
+        </h2>
+        <p
+          className="m-0 text-[#131313] whitespace-nowrap"
+          style={{ fontSize: 'clamp(11px, 2vw, 34px)', fontWeight: 274 }}
+        >
           Deposit $25,{' '}
-          <strong style={styles.highlight}>Grab 50 free spins.</strong>
+          <strong style={{ fontWeight: 274 }}>Grab 50 free spins.</strong>
         </p>
       </div>
 
     </div>
   </section>
 );
-
-const styles = {
-
-  wrapper: {
-    width: '1189px',
-    maxWidth: '100%',
-    marginBottom: '16px',
-    marginTop: '0px',
-    paddingTop: '0px',
-    boxSizing: 'border-box',
-    position: 'relative',
-  },
-
-card: {
-  position: 'relative',
-  width: '100%',
-  height: '240px',
-  borderRadius: '12px',
-  background: 'linear-gradient(90deg, #92FE9D 0%, #00C9FF 100%)',
-  display: 'flex',
-  alignItems: 'center',
-  overflow: 'hidden', // <-- clip anything outside the card
-  boxSizing: 'border-box',
-},
-
-
-  /* Image anchored to bottom-left, overflows upward above the card */
-image: {
-  position: 'absolute',
-  bottom: '-120px',      // push it partially behind
-  left: '32px',          // instead of left: 20px + margin-left: 12px
-  height: '350px',
-  width: 'auto',
-  objectFit: 'contain',
-  objectPosition: 'bottom',
-  zIndex: 1,             // behind text
-},
-
-
-
-  /* Text sits on the right side */
-  textBlock: {
-    position: 'absolute',
-    top: '59px',
-    left: '567px',
-    width: '503px',
-    height: '121.41px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '32.41px',
-    zIndex: 1,
-    overflow: 'visible',
-  },
-
-  title: {
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif',
-    fontSize: '72.03px',
-    fontWeight: '510',
-    fontStyle: 'normal',
-    color: '#131313',
-    margin: 0,
-    padding: 0,
-    border: 'none',
-    lineHeight: '1',
-    letterSpacing: '0',
-    whiteSpace: 'nowrap',
-  },
-
-  subtitle: {
-    fontFamily: '"SF Pro", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif',
-    fontSize: '33.69px',
-    fontWeight: '274',
-    fontStyle: 'normal',
-    color: '#131313',
-    margin: 0,
-    lineHeight: '39.14px',
-    letterSpacing: '0',
-    textAlign: 'center',
-    whiteSpace: 'nowrap',
-  },
-
-  highlight: {
-    fontWeight: '274',
-    fontSize: '33.69px',
-    lineHeight: '39.14px',
-    letterSpacing: '0',
-    color: '#131313',
-    whiteSpace: 'nowrap',
-  },
-};
 
 export default FreeSpinBonus;

@@ -3,7 +3,7 @@ import PromotionCard from '../cards/PromotionCard';
 import promo1 from '../../assets/images/promo1.png';
 import promo2 from '../../assets/images/promo2.png';
 import promo3 from '../../assets/images/promo3.png';
-import promotionsIcon from '../../assets/icons/volleyball-player 2.png';
+import { volleyballPlayer2 as promotionsIcon } from '../../assets/icons';
 
 const promotions = [
   {
@@ -38,65 +38,52 @@ const promotions = [
 
 const PromotionsSection = () => {
   return (
-    <section style={styles.section}>
+    <section className="bg-white rounded-xl p-4 md:p-5 mb-3 md:mb-4 w-full box-border">
+
       <SectionHeader
         title="Promotions"
         icon={
           <img
             src={promotionsIcon}
             alt="Promotions"
+            className="w-full h-full object-contain"
           />
         }
-        onViewAll={() => { }}
+        onViewAll={() => {}}
       />
-      <div style={styles.grid}>
+
+      {/* Cards — horizontal scroll, snap on mobile */}
+      <div
+        className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-none"
+        style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
         {promotions.map((promo) => (
-          <PromotionCard key={promo.title} {...promo} />
+          <div
+            key={promo.title}
+            className="shrink-0 w-[calc(100vw-56px)] md:w-auto"
+            style={{ scrollSnapAlign: 'start' }}
+          >
+            <PromotionCard {...promo} />
+          </div>
         ))}
       </div>
-      <div style={styles.dots}>
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} style={{ ...styles.dot, ...(i === 0 ? styles.dotActive : {}) }} />
+
+      {/* Dots */}
+      <div className="flex justify-center gap-1.5 mt-3.5">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className={`h-2 rounded-full cursor-pointer transition-all ${
+              i === 0
+                ? 'w-[22px] bg-[#1cd4ff]'
+                : 'w-2 bg-[#d0d0d0]'
+            }`}
+          />
         ))}
       </div>
+
     </section>
   );
-};
-
-const styles = {
-  section: {
-    backgroundColor: '#ffffff',
-    borderRadius: '12px',
-    padding: '20px',
-    marginBottom: '16px',
-    width: '1189px',
-  },
-  grid: {
-    display: 'flex',
-    gap: '16px',
-    flexWrap: 'nowrap',
-    overflowX: 'auto',
-    scrollbarWidth: 'none',       /* Firefox */
-    msOverflowStyle: 'none',      /* IE/Edge */
-  },
-  dots: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '6px',
-    marginTop: '14px',
-  },
-  dot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-    backgroundColor: '#d0d0d0',
-    cursor: 'pointer',
-  },
-  dotActive: {
-    backgroundColor: '#1cd4ff',
-    width: '22px',
-    borderRadius: '4px',
-  },
 };
 
 export default PromotionsSection;
